@@ -1,0 +1,13 @@
+name: ShadPlug
+main: com.shadoom.shadplug.ShadPlug
+version: 1.0
+author: ShaDooM
+website: http://www.shadoom.com/
+softdepend: [Vault]
+
+commands:
+    shad:
+        description: A very erotic Plugin developed for you.
+permissions:
+    ShadPlug.Admin.SetSpawn:
+        description: Let's you set the Spawnpoints of both Teams.
