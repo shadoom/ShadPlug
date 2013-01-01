@@ -22,6 +22,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 
@@ -55,9 +56,28 @@ public class ShadListener implements Listener {
 		}
 
 	}
+/*
+ * Remove players from the hashmap when they leave
+ */
+	@EventHandler
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		String player = event.getPlayer().getName();
+		if (plugin.getConfig().getStringList("ShadPlug.Teams.Red.Members")
+				.contains(player)) {
 
+			sConfig.TeamRed.remove(player);
+			plugin.saveConfig();
+		}
+
+		if (plugin.getConfig().getStringList("ShadPlug.Teams.Blue.Members")
+				.contains(player)) {
+			sConfig.TeamBlue.remove(player);
+			plugin.saveConfig();
+		}
+
+	}
 	/*
-	 * Respawn on Teamspawn NOT WORKING
+	 * Respawn on Teamspawn 
 	 */
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
