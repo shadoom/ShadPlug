@@ -1,34 +1,31 @@
 package com.shadoom.shadplug;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-
-import org.bukkit.Server;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import com.avaje.ebeaninternal.server.core.ConfigBuilder;
-
 public class ShadConfig {
 
 	public static ShadPlug plugin;
-	private Server server;
+	//private Server server;
 
 	public static HashMap<String, String> TeamRed = new HashMap<String, String>();
 	public static HashMap<String, String> TeamBlue = new HashMap<String, String>();
 	public static HashMap<String, Integer> redScoreHashMap = new HashMap<String, Integer>();
 	public static HashMap<String, Integer> blueScoreHashMap = new HashMap<String, Integer>();
+	
+	public static HashMap<String, String> instantchat = new HashMap<String, String>();
+	
+	public static HashMap<String, String> lastworlddeath = new HashMap<String, String>();
+	
+	public static ArrayList<String> redchatonline = new ArrayList<String>();
+	public static ArrayList<String> bluechatonline = new ArrayList<String>();
+	
 	public static int redScore = 0;
 	public static int blueScore = 0;
-	public static String[] enabledWorldsStrings = { "world", "pvp", "bla" };
+	public static String[] enabledWorldsStrings = {"pvp"};
 
 	public ShadConfig(ShadPlug plugin) {
-		this.plugin = plugin;
+		ShadConfig.plugin = plugin;
 		manageConfig();
 	}
 
@@ -38,15 +35,23 @@ public class ShadConfig {
 	public static void manageConfig() {
 
 		// Config
-		plugin.getConfig().addDefault("ShadPlug.Teams.Blue.Members", "player2");
-		plugin.getConfig().addDefault("ShadPlug.Teams.Red.Members", "player1");
-		plugin.getConfig().addDefault("ShadPlug.Teams.Red.Score", 1);
-		plugin.getConfig().addDefault("ShadPlug.Teams.Blue.Score", 1);
+		
+		
+		String[] players = {};
+		plugin.getConfig().addDefault("ShadPlug.Teams.Blue.Members",
+				Arrays.asList(players));
+		plugin.getConfig().addDefault("ShadPlug.Teams.Red.Members",
+				Arrays.asList(players));
+		
+		plugin.getConfig().addDefault("ShadPlug.Teams.Red.Score", 0);
+		plugin.getConfig().addDefault("ShadPlug.Teams.Blue.Score", 0);
+		
 		plugin.getConfig().addDefault("ShadPlug.enabled", 1);
-		plugin.getConfig().addDefault("ShadPlug.Teams.Red.Score", redScore);
-		plugin.getConfig().addDefault("ShadPlug.Teams.Blue.Score", blueScore);
+				
 		plugin.getConfig().addDefault("ShadPlug.Worlds",
 				Arrays.asList(enabledWorldsStrings));
+		
+		
 		redScore = plugin.getConfig().getInt("ShadPlug.Teams.Red.Score");
 		blueScore = plugin.getConfig().getInt("ShadPlug.Teams.Blue.Score");
 		

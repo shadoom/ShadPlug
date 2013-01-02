@@ -1,31 +1,24 @@
 package com.shadoom.shadplug;
 
-import java.nio.file.Path;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.plugin.PluginDescriptionFile;
 
+@SuppressWarnings("deprecation")
 public class ShadListener implements Listener {
 
 	public static ShadPlug plugin;
@@ -37,6 +30,84 @@ public class ShadListener implements Listener {
 	}
 
 	/*
+	 * Automatic chat
+	 */
+	@EventHandler
+	public void onPlayerChat(PlayerChatEvent event) {
+
+		if (ShadConfig.instantchat.containsKey(event.getPlayer().getName())) {
+
+			event.setCancelled(true);
+
+			String playername = event.getPlayer().getName();
+
+			List<String> peopletosendto = null;
+
+			String team = "nill";
+
+			if (ShadConfig.instantchat.get(playername).equals("red")) {
+				peopletosendto = plugin.getConfig().getStringList(
+						"ShadPlug.Teams.Red.Members");
+				team = "red";
+			}
+			if (ShadConfig.instantchat.get(playername).equals("blue")) {
+				peopletosendto = plugin.getConfig().getStringList(
+						"ShadPlug.Teams.Blue.Members");
+				team = "blue";
+			}
+
+			if (peopletosendto == null)
+				return;
+
+			int playeron = 0;
+			int sizeoflist = 0;
+
+			if (team.equals("blue")) {
+				sizeoflist = ShadConfig.bluechatonline.size();
+			}
+
+			if (team.equals("red")) {
+				sizeoflist = ShadConfig.redchatonline.size();
+			}
+
+			while (playeron < sizeoflist) {
+
+				String playerstring = "";
+
+				if (team.equals("blue"))
+					playerstring = ShadConfig.bluechatonline.get(playeron);
+
+				if (team.equals("red"))
+					playerstring = ShadConfig.redchatonline.get(playeron);
+
+				Player playersend = Bukkit.getPlayer(playerstring);
+
+				if (playersend != null) {
+					
+					String message = event.getMessage();
+
+					if (team.equals("red")) {
+						playersend.sendMessage("§6[§4Team§6] §2" + event.getPlayer().getDisplayName()
+								+ "§f: §e" + message);
+						System.out.println("§6[§4Team§6] §2" + event.getPlayer().getDisplayName()
+								+ "§f: §e" + message);
+					}
+					if (team.equals("blue")) {
+						playersend.sendMessage("§6[§1Team§6] §2" + event.getPlayer().getDisplayName()
+								+ "§f: §e" + message);
+						System.out.println("§6[§1Team§6] §2" + event.getPlayer().getDisplayName()
+								+ "§f: §e" + message);
+					}
+				}
+
+				playeron++;
+
+			}
+		}
+
+	}
+
+	/*
 	 * Add Players to their group
 	 */
 	@EventHandler
@@ -45,73 +116,97 @@ public class ShadListener implements Listener {
 		if (plugin.getConfig().getStringList("ShadPlug.Teams.Red.Members")
 				.contains(player)) {
 
-			sConfig.TeamRed.put(player, "red");
+			ShadConfig.TeamRed.put(player, "red");
+
+			ShadConfig.redchatonline.add(player);
+
 			plugin.saveConfig();
 		}
 
 		if (plugin.getConfig().getStringList("ShadPlug.Teams.Blue.Members")
 				.contains(player)) {
-			sConfig.TeamBlue.put(player, "blue");
+			ShadConfig.TeamBlue.put(player, "blue");
+
+			ShadConfig.bluechatonline.add(player);
+
 			plugin.saveConfig();
 		}
 
 	}
-/*
- * Remove players from the hashmap when they leave
- */
+
+	/*
+	 * Remove players from the hashmap when they leave
+	 */
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		String player = event.getPlayer().getName();
 		if (plugin.getConfig().getStringList("ShadPlug.Teams.Red.Members")
 				.contains(player)) {
 
-			sConfig.TeamRed.remove(player);
+			ShadConfig.TeamRed.remove(player);
+
+			ShadConfig.redchatonline.remove(player);
+
 			plugin.saveConfig();
 		}
 
 		if (plugin.getConfig().getStringList("ShadPlug.Teams.Blue.Members")
 				.contains(player)) {
-			sConfig.TeamBlue.remove(player);
+			ShadConfig.TeamBlue.remove(player);
+
+			ShadConfig.bluechatonline.remove(player);
+
 			plugin.saveConfig();
 		}
 
 	}
+
 	/*
-	 * Respawn on Teamspawn 
+	 * Respawn on Teamspawn
 	 */
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
-		if (sConfig.TeamRed.containsKey(player.getName())) {
-			World world;
-			world = plugin.getServer().getWorld(
-					plugin.getConfig().getString("ShadPlug.Spawn.Red.World"));
-			
-			
-			Location location = new Location(world, plugin.getConfig()
-					.getDouble("ShadPlug.Spawn.Red.X"), plugin.getConfig()
-					.getDouble("ShadPlug.Spawn.Red.Y"), plugin.getConfig()
-					.getDouble("ShadPlug.Spawn.Red.Z"), (float) plugin
-					.getConfig().getDouble("ShadPlug.Spawn.Red.Yaw"),
-					(float) plugin.getConfig().getDouble(
-							"ShadPlug.Spawn.Red.Pitch"));
-			
-			event.setRespawnLocation(location);
-			player.sendMessage("You have been respawned at the Team" + ChatColor.RED + "Red" + ChatColor.WHITE + "'s HQ.");
-		}
-		if (sConfig.TeamBlue.containsKey(player.getPlayer().getName())) {
-			World world;
-			world = plugin.getServer().getWorld(
-					plugin.getConfig().getString("ShadPlug.Spawn.Blue.World"));
-			Location location = new Location(world, plugin.getConfig()
-					.getDouble("ShadPlug.Spawn.Blue.X"), plugin.getConfig()
-					.getDouble("ShadPlug.Spawn.Blue.Y"), plugin.getConfig()
-					.getDouble("ShadPlug.Spawn.Blue.Z"), (float) plugin
-					.getConfig().getDouble("ShadPlug.Spawn.Blue.Yaw"),
-					(float) plugin.getConfig().getDouble(
-							"ShadPlug.Spawn.Blue.Pitch"));
-			event.setRespawnLocation(location);
-			player.sendMessage("You have been respawned at the Team Blue's HQ.");
+
+		if (ShadConfig.lastworlddeath.containsKey(player.getName())) {
+
+			ShadConfig.lastworlddeath.remove(player.getName());
+
+			if (ShadConfig.TeamRed.containsKey(player.getName())) {
+				World world;
+				world = plugin.getServer().getWorld(
+						plugin.getConfig()
+								.getString("ShadPlug.Spawn.Red.World"));
+
+				Location location = new Location(world, plugin.getConfig()
+						.getDouble("ShadPlug.Spawn.Red.X"), plugin.getConfig()
+						.getDouble("ShadPlug.Spawn.Red.Y"), plugin.getConfig()
+						.getDouble("ShadPlug.Spawn.Red.Z"), (float) plugin
+						.getConfig().getDouble("ShadPlug.Spawn.Red.Yaw"),
+						(float) plugin.getConfig().getDouble(
+								"ShadPlug.Spawn.Red.Pitch"));
+
+				event.setRespawnLocation(location);
+				player.sendMessage("You have been respawned at the Team "
+						+ ChatColor.RED + "Red" + ChatColor.WHITE + "'s HQ.");
+			}
+			if (ShadConfig.TeamBlue.containsKey(player.getPlayer().getName())) {
+				World world;
+				world = plugin.getServer().getWorld(
+						plugin.getConfig().getString(
+								"ShadPlug.Spawn.Blue.World"));
+				Location location = new Location(world, plugin.getConfig()
+						.getDouble("ShadPlug.Spawn.Blue.X"), plugin.getConfig()
+						.getDouble("ShadPlug.Spawn.Blue.Y"), plugin.getConfig()
+						.getDouble("ShadPlug.Spawn.Blue.Z"), (float) plugin
+						.getConfig().getDouble("ShadPlug.Spawn.Blue.Yaw"),
+						(float) plugin.getConfig().getDouble(
+								"ShadPlug.Spawn.Blue.Pitch"));
+				event.setRespawnLocation(location);
+				player.sendMessage("You have been respawned at the Team "
+						+ ChatColor.BLUE + "Blue" + ChatColor.WHITE + "'s HQ.");
+			}
+
 		}
 	}
 
@@ -126,34 +221,91 @@ public class ShadListener implements Listener {
 
 			Player playerthatdied = (Player) entitythatdied;
 
+			if (playerthatdied.getKiller() instanceof Arrow) {
+
+				Arrow arrow = (Arrow) ((Player) entitythatdied).getKiller();
+
+				Entity shooter = arrow.getShooter();
+
+				if (shooter instanceof Player) {
+
+					Player playerthatkilled = (Player) shooter;
+
+					if (ShadConfig.TeamBlue.containsKey(playerthatkilled
+							.getName())
+							&& ShadConfig.TeamRed.containsKey(playerthatdied
+									.getName())
+							&& (plugin.getConfig().getStringList(
+									"ShadPlug.Worlds")
+									.contains(playerthatkilled.getWorld()
+											.getName()))) {
+
+						plugin.getServer().broadcastMessage("Blue Killed Red");
+
+						ShadConfig.blueScore++;
+						plugin.getConfig().set("ShadPlug.Teams.Blue.Score",
+								ShadConfig.blueScore);
+
+						ShadConfig.lastworlddeath.put(playerthatdied.getName(),
+								playerthatdied.getWorld().getName());
+
+						plugin.saveConfig();
+
+					}
+					if (ShadConfig.TeamRed.containsKey(playerthatkilled
+							.getName())
+							&& ShadConfig.TeamBlue.containsKey(playerthatdied
+									.getName())
+							&& (plugin.getConfig().getStringList(
+									"ShadPlug.Worlds")
+									.contains(playerthatkilled.getWorld()
+											.getName()))) {
+						plugin.getServer().broadcastMessage("Red Killed Blue");
+
+						ShadConfig.redScore++;
+						plugin.getConfig().set("ShadPlug.Teams.Red.Score",
+								ShadConfig.redScore);
+						plugin.saveConfig();
+						plugin.saveConfig();
+
+					}
+
+				}
+
+			}
+
 			if (playerthatdied.getKiller() instanceof Player) {
 
 				Player playerthatkilled = (Player) playerthatdied.getKiller();
 
-				if (sConfig.TeamBlue.containsKey(playerthatkilled.getName())
-						&& sConfig.TeamRed
-								.containsKey(playerthatdied.getName())
+				if (ShadConfig.TeamBlue.containsKey(playerthatkilled.getName())
+						&& ShadConfig.TeamRed.containsKey(playerthatdied
+								.getName())
 						&& (plugin.getConfig().getStringList("ShadPlug.Worlds")
 								.contains(playerthatkilled.getWorld().getName()))) {
+
 					plugin.getServer().broadcastMessage("Blue Killed Red");
 
-					sConfig.blueScore++;
+					ShadConfig.blueScore++;
 					plugin.getConfig().set("ShadPlug.Teams.Blue.Score",
-							sConfig.blueScore);
-					
+							ShadConfig.blueScore);
+
+					ShadConfig.lastworlddeath.put(playerthatdied.getName(),
+							playerthatdied.getWorld().getName());
+
 					plugin.saveConfig();
 
 				}
-				if (sConfig.TeamRed.containsKey(playerthatkilled.getName())
-						&& sConfig.TeamBlue.containsKey(playerthatdied
+				if (ShadConfig.TeamRed.containsKey(playerthatkilled.getName())
+						&& ShadConfig.TeamBlue.containsKey(playerthatdied
 								.getName())
 						&& (plugin.getConfig().getStringList("ShadPlug.Worlds")
 								.contains(playerthatkilled.getWorld().getName()))) {
 					plugin.getServer().broadcastMessage("Red Killed Blue");
 
-					sConfig.redScore++;
+					ShadConfig.redScore++;
 					plugin.getConfig().set("ShadPlug.Teams.Red.Score",
-							sConfig.redScore);
+							ShadConfig.redScore);
 					plugin.saveConfig();
 					plugin.saveConfig();
 
@@ -164,7 +316,7 @@ public class ShadListener implements Listener {
 	}
 
 	/*
-	 * FriendlyFire check 
+	 * FriendlyFire check
 	 */
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -172,16 +324,16 @@ public class ShadListener implements Listener {
 				&& event.getDamager() instanceof Player) {
 			Player attacker = (Player) event.getDamager();
 			Player defender = (Player) event.getEntity();
-			if (sConfig.TeamRed.containsKey(defender.getName())
-					&& sConfig.TeamRed.containsKey(attacker.getName())
+			if (ShadConfig.TeamRed.containsKey(defender.getName())
+					&& ShadConfig.TeamRed.containsKey(attacker.getName())
 					&& plugin.getConfig().getStringList("ShadPlug.Worlds")
 							.contains(attacker.getWorld().getName())) {
 				event.setCancelled(true);
 				attacker.sendMessage(ChatColor.LIGHT_PURPLE
 						+ "Do not attack your Teammates!");
 			}
-			if (sConfig.TeamBlue.containsKey(defender.getName())
-					&& sConfig.TeamBlue.containsKey(attacker.getName())
+			if (ShadConfig.TeamBlue.containsKey(defender.getName())
+					&& ShadConfig.TeamBlue.containsKey(attacker.getName())
 					&& plugin.getConfig().getStringList("ShadPlug.Worlds")
 							.contains(attacker.getWorld().getName())) {
 				event.setCancelled(true);
