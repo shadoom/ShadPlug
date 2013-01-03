@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -13,10 +14,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
 @SuppressWarnings("deprecation")
 public class ShadListener implements Listener {
@@ -189,6 +194,9 @@ public class ShadListener implements Listener {
 				event.setRespawnLocation(location);
 				player.sendMessage("You have been respawned at the Team "
 						+ ChatColor.RED + "Red" + ChatColor.WHITE + "'s HQ.");
+				player.getInventory().setHelmet(
+						new ItemStack(Material.WOOL, 1,
+								(short) 14));
 			}
 			if (ShadConfig.TeamBlue.containsKey(player.getPlayer().getName())) {
 				World world;
@@ -205,6 +213,9 @@ public class ShadListener implements Listener {
 				event.setRespawnLocation(location);
 				player.sendMessage("You have been respawned at the Team "
 						+ ChatColor.BLUE + "Blue" + ChatColor.WHITE + "'s HQ.");
+				player.getInventory().setHelmet(
+						new ItemStack(Material.WOOL, 1,
+								(short) 11));
 			}
 
 		}
@@ -340,6 +351,27 @@ public class ShadListener implements Listener {
 				attacker.sendMessage(ChatColor.LIGHT_PURPLE
 						+ "Do not attack your Teammates!");
 			}
+		}
+	}
+	/*
+	 * Make em not remove the wool helmet by clicking
+	 */
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
+		Player player = (Player) event.getWhoClicked();
+
+		if (event.getWhoClicked() instanceof Player
+				&& ShadConfig.TeamBlue.containsKey(player.getName())
+				|| ShadConfig.TeamRed.containsKey(player.getName()) 
+				&& plugin.getConfig().getStringList("ShadPlug.Worlds")
+					.contains(player.getWorld().getName())){
+			
+			if (event.getSlot() == 39) {
+				
+				event.setCancelled(true);
+				
+			}
+			
 		}
 	}
 

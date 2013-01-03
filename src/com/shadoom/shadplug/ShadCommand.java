@@ -1,5 +1,7 @@
 package com.shadoom.shadplug;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -37,7 +39,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 		}
 		// Making sure its a player -- End
 
-		if (commandName.equals("tc")) {
+		if (commandName.equals("sc")) {
 			
 			if (args.length > 0) {
 				
@@ -206,9 +208,20 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 			if (args.length == 1) {
 				String first;
 				first = args[0];
-
+				
+				if (first.equalsIgnoreCase("addworld")) {
+					erfolg = true;
+					player.sendMessage(ChatColor.RED + "Correct usage is: " + ChatColor.AQUA + "/shad addworld [WORLD]");
+					
+				}
+				
+				if (first.equalsIgnoreCase("remworld")) {
+					erfolg = true;
+					player.sendMessage(ChatColor.RED + "Correct usage is: " + ChatColor.AQUA + "/shad remworld [WORLD]");
+					
+				}
 				if (first.equalsIgnoreCase("chat")) {
-
+					erfolg = true;
 					if (ShadConfig.instantchat.containsKey(player.getName()) == false) {
 
 						if (ShadConfig.TeamBlue.containsKey(player.getName())) {
@@ -254,9 +267,27 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 					player.sendMessage(ChatColor.AQUA + "/shad list blue"
 							+ ChatColor.RED
 							+ "      Lists all members of Team Blue");
+					player.sendMessage(ChatColor.AQUA + "/shad spawn"
+							+ ChatColor.RED
+							+ "      Spawn at your Team's HQ");
+					player.sendMessage(ChatColor.AQUA + "/sc [TEXT]"
+							+ ChatColor.RED
+							+ "      QuickChat with your team");
+					player.sendMessage(ChatColor.AQUA + "/sc"
+							+ ChatColor.RED
+							+ "           Toggle Teamchat");
 					player.sendMessage(ChatColor.AQUA
 							+ "/shad setspawn red/blue" + ChatColor.RED
 							+ "   Setspawn of the Team.");
+					player.sendMessage(ChatColor.AQUA + "/shad reload"
+							+ ChatColor.RED
+							+ "        Reloads the config.yml");
+					player.sendMessage(ChatColor.AQUA + "/shad clear"
+							+ ChatColor.RED
+							+ "        Nullifies everything in config.yml");
+					player.sendMessage(ChatColor.AQUA + "/shad addworld [WORLD]"
+							+ ChatColor.RED
+							+ "     Adds [WORLD] to config.yml");
 					player.sendMessage("===================================");
 					erfolg = true;
 
@@ -287,12 +318,10 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 
 											@Override
 											public void run() {
-												player.teleport(location); // this
-																			// will
-																			// execute
-																			// after
-																			// 5
-																			// seconds
+												player.teleport(location);
+												player.getInventory().setHelmet(
+														new ItemStack(Material.WOOL, 1,
+																(short) 11));
 											}
 										}, 100L); // 100 ticks (20 ticks = 1
 													// second)
@@ -322,31 +351,14 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 											@Override
 											public void run() {
 												player.teleport(location);
+												player.getInventory().setHelmet(
+														new ItemStack(Material.WOOL, 1,
+																(short) 14));
 											}
 										}, 100L);
 					}
 				}
 
-				/*
-				 * if(first.equalsIgnoreCase("chat")){ erfolg = true; String
-				 * sender_key = sender.getName(); if
-				 * (!ShadConfig.TeamBlue.containsKey(sender_key) ||
-				 * !ShadConfig.TeamRed.containsKey(sender_key)) {
-				 * sender.sendMessage(ChatColor.RED + "Erst ein Team wählen!" +
-				 * ChatColor.GRAY + "(/join <team>)"); return true; } String
-				 * sender_team = ShadConfig.TeamBlue.get(sender_key); String
-				 * nachricht = ""; StringBuilder nachricht = new
-				 * StringBuilder(); for(int i = 0; i < args.length; i++)
-				 * nachricht.append(args[i]).append(" "); for (Player
-				 * playerOnline : plugin.getServer().getOnlinePlayers()) {
-				 * String empfaenger_key = playerOnline.getName(); if
-				 * (ShadConfig.TeamBlue.containsKey(empfaenger_key)){ String
-				 * empfaenger_team = ShadConfig.TeamBlue.get(empfaenger_key); if
-				 * (sender_team.equalsIgnoreCase(empfaenger_team)) {
-				 * player.sendMessage(ChatColor.BLUE + "[" + ChatColor.AQUA +
-				 * sender_team + ChatColor.BLUE + "] " + ChatColor.YELLOW +
-				 * sender.getName() + " " + ChatColor.AQUA + nachricht); } } } }
-				 */
 				// Join a team, Red or Blue
 				if (first.equalsIgnoreCase("join")) {
 					erfolg = true;
@@ -410,11 +422,12 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 													@Override
 													public void run() {
 														player.teleport(location);
+														player.getInventory().setHelmet(
+																new ItemStack(Material.WOOL, 1,
+																		(short) 14));
 													}
 												}, 100L);
-								player.getInventory().setHelmet(
-										new ItemStack(Material.WOOL, 1,
-												(short) 14));
+
 
 							} else {
 								teamblueList.add(player.getName());
@@ -456,11 +469,11 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 													@Override
 													public void run() {
 														player.teleport(location);
+														player.getInventory().setHelmet(
+																new ItemStack(Material.WOOL, 1,
+																		(short) 11));
 													}
 												}, 100L);
-								player.getInventory().setHelmet(
-										new ItemStack(Material.WOOL, 1,
-												(short) 11));
 							}
 						}
 					} else {
@@ -468,7 +481,9 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 					}
 
 				}
-
+				/*
+				 * Display Team scores
+				 */
 				if (first.equalsIgnoreCase("score")) {
 					erfolg = true;
 					player.sendMessage(ChatColor.RED + "====================");
@@ -479,6 +494,9 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 							+ ShadConfig.blueScore);
 					player.sendMessage(ChatColor.RED + "====================");
 				}
+				/*
+				 * Spit out help how to use List command
+				 */
 				if (first.equalsIgnoreCase("list")) {
 					erfolg = true;
 					player.sendMessage(ChatColor.GOLD + "Type: "
@@ -491,17 +509,62 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 							+ "To see the members of each team.");
 
 				}
+				/*
+				 * Spit out help how to use SetSpawn command
+				 */
 				if (first.equalsIgnoreCase("setspawn")) {
 					erfolg = true;
 					player.sendMessage("Correct Usage is" + ChatColor.AQUA
 							+ " /shad setspawn RED/BLUE");
 
 				}
+				/*
+				 * Reload Config.yml
+				 */
 				if (first.equalsIgnoreCase("reload")) {
 					erfolg = true;
 					plugin.reloadConfig();
 					player.sendMessage(ChatColor.AQUA
 							+ "ShadPlugs config.yml has been reloaded.");
+				}
+				
+				if (first.equalsIgnoreCase("clear")) {
+					erfolg = true;
+					ShadConfig.TeamBlue.clear();
+					ShadConfig.TeamRed.clear();
+					ShadConfig.redScoreHashMap.clear();
+					ShadConfig.blueScoreHashMap.clear();
+					ShadConfig.bluechatonline.clear();
+					ShadConfig.redchatonline.clear();
+					ShadConfig.instantchat.clear();
+					
+					plugin.getConfig().set("ShadPlug.Spawn.Red", null);
+					plugin.getConfig().set("ShadPlug.Spawn.Red.World", null);
+					plugin.getConfig().set("ShadPlug.Spawn.Red.X", null);
+					plugin.getConfig().set("ShadPlug.Spawn.Red.Y", null);
+					plugin.getConfig().set("ShadPlug.Spawn.Red.Z", null);
+					plugin.getConfig().set("ShadPlug.Spawn.Red.Pitch", null);
+					plugin.getConfig().set("ShadPlug.Spawn.Red.Yaw", null);
+					
+					plugin.getConfig().set("ShadPlug.Spawn.Blue", null);
+					plugin.getConfig().set("ShadPlug.Spawn.Blue.World", null);
+					plugin.getConfig().set("ShadPlug.Spawn.Blue.X", null);
+					plugin.getConfig().set("ShadPlug.Spawn.Blue.Y", null);
+					plugin.getConfig().set("ShadPlug.Spawn.Blue.Z", null);
+					plugin.getConfig().set("ShadPlug.Spawn.Blue.Pitch", null);
+					plugin.getConfig().set("ShadPlug.Spawn.Blue.Yaw", null);
+					
+					plugin.getConfig().set("ShadPlug.Teams.Blue", null);
+					plugin.getConfig().set("ShadPlug.Teams.Blue.Members", null);
+					plugin.getConfig().set("ShadPlug.Teams.Blue.Members.Score", null);
+					
+					plugin.getConfig().set("ShadPlug.Teams.Red", null);
+					plugin.getConfig().set("ShadPlug.Teams.Red.Members", null);
+					plugin.getConfig().set("ShadPlug.Teams.Red.Members.Score", null);					
+					
+					plugin.getConfig().set("ShadPlug.Worlds", null);
+					
+					plugin.saveConfig();
 				}
 			}
 			if (args.length == 2) {
@@ -509,6 +572,32 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				String second;
 				first = args[0];
 				second = args[1];
+				/*
+				 *  Add a world to the enabled Worlds.
+				 */
+				if (first.equals("addworld")){
+					erfolg = true;
+					List<String> worldList = plugin.getConfig().getStringList("ShadPlug.Worlds");
+					worldList.add(second);
+					plugin.getConfig().set("ShadPlug.Worlds", worldList);
+					player.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD.toString() + second + ChatColor.AQUA + " has been added to the enabled Worlds.");
+					plugin.saveConfig();
+				}
+				/*
+				 *  Remove a world from the enabled Worlds.
+				 */
+				if (first.equals("remworld")){
+					erfolg = true;
+					List<String> worldList = plugin.getConfig().getStringList("ShadPlug.Worlds");
+					worldList.remove(second);
+					plugin.getConfig().set("ShadPlug.Worlds", worldList);
+					player.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD.toString() + second + ChatColor.AQUA + " has been " + ChatColor.RED + "removed" + ChatColor.AQUA + " from the enabled Worlds.");
+					plugin.saveConfig();
+				}
+				
+				/*
+				 * Set Red spawn
+				 */
 				if (first.equalsIgnoreCase("setspawn")
 						&& second.equalsIgnoreCase("red")) {
 					erfolg = true;
@@ -520,7 +609,9 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 						double spawnZ = player.getLocation().getZ();
 						float pitch = location.getPitch();
 						float yaw = location.getYaw();
-
+						if(!plugin.getConfig().getStringList("ShadPlug.Worlds").contains(World)) {
+							player.sendMessage(ChatColor.RED + "WARNING:" + ChatColor.AQUA + " The world where you just set Spawn is not enabled in the config.yml");
+						}
 						ShadConfig.savePosToConfigRed(1, World, spawnX, spawnY,
 								spawnZ, pitch, yaw);
 						player.sendMessage("Spawnpoint for Red-Team set");
@@ -531,6 +622,9 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 						player.sendMessage("ShadPlug.Admin.SetSpawn Perms missing.");
 					}
 				}
+				/*
+				 * Set Blue spawn
+				 */
 				if (first.equalsIgnoreCase("setspawn")
 						&& second.equalsIgnoreCase("blue")) {
 					erfolg = true;
@@ -542,7 +636,9 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 						double spawnZ = player.getLocation().getZ();
 						float pitch = location.getPitch();
 						float yaw = location.getYaw();
-
+						if(!plugin.getConfig().getStringList("ShadPlug.Worlds").contains(World)) {
+							player.sendMessage(ChatColor.RED + "WARNING:" + ChatColor.AQUA + " The world where you just set Spawn is not enabled in the config.yml");
+						}
 						ShadConfig.savePosToConfigBlue(1, World, spawnX,
 								spawnY, spawnZ, pitch, yaw);
 						player.sendMessage("Spawnpoint for Blue-Team set");
@@ -554,6 +650,10 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 					}
 
 				}
+				
+				/*
+				 * List Red and Blue players.
+				 */
 				if (first.equalsIgnoreCase("list")
 						&& second.equalsIgnoreCase("red")) {
 					erfolg = true;

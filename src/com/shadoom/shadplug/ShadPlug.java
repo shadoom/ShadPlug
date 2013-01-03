@@ -27,7 +27,7 @@ public class ShadPlug extends JavaPlugin {
 		ShadConfig.manageConfig();
 		reloadConfig();
 		getCommand("shad").setExecutor(Commander);
-		getCommand("tc").setExecutor(Commander);
+		getCommand("sc").setExecutor(Commander);
 		PluginDescriptionFile descriptionFile = this.getDescription();
 		getLogger().info(
 				"ShadPlug " + descriptionFile.getVersion()

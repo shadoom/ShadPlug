@@ -10,6 +10,8 @@ commands:
         description: A very erotic Plugin developed for you.
     hashlist:
         description: to see content of TeamBlue and TeamRed hashmap.
+    sc:
+        description: Teamchat toggle and quickchat.
 permissions:
     ShadPlug.Admin.SetSpawn:
         description: Let's you set the Spawnpoints of both Teams.
