@@ -391,8 +391,8 @@ public class ShadListener implements Listener {
 		Player player = (Player) event.getWhoClicked();
 
 		if (event.getWhoClicked() instanceof Player
-				&& ShadConfig.TeamBlue.containsKey(player.getName())
-				|| ShadConfig.TeamRed.containsKey(player.getName()) 
+				&& (ShadConfig.TeamBlue.containsKey(player.getName())
+				|| ShadConfig.TeamRed.containsKey(player.getName())) 
 				&& plugin.getConfig().getStringList("ShadPlug.Worlds")
 					.contains(player.getWorld().getName())){
 			
@@ -417,6 +417,7 @@ public class ShadListener implements Listener {
 		if(ShadConfig.TeamRed.containsKey(event.getNamedPlayer().getName()) && plugin.getConfig().getStringList("ShadPlug.Worlds")
 				.contains(player.getWorld().getName())) {
 			event.setTag(ChatColor.RED.toString() + "#" + playerNameString + "#");
+			
 		}
 	}
 	
