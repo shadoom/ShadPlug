@@ -19,6 +19,7 @@ public class ShadConfig {
 	
 	public static ArrayList<String> redchatonline = new ArrayList<String>();
 	public static ArrayList<String> bluechatonline = new ArrayList<String>();
+	public static ArrayList<String> opChatOnline = new ArrayList<String>();
 	
 	public static int redScore = 0;
 	public static int blueScore = 0;

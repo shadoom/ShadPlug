@@ -153,8 +153,66 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 						
 						
 					} else {
-						player.sendMessage(ChatColor.RED
-								+ "You are not in a team!");
+						
+						if (player.isOp()) {
+							
+							//String playername = player.getName();
+
+							List<String> peopletosendto = null;
+
+								peopletosendto = plugin.getConfig().getStringList(
+										"ShadPlug.Teams.Red.Members");
+
+							if (peopletosendto == null)
+								return false;
+
+							int playeron = 0;
+							int sizeoflist = 0;
+
+								sizeoflist = ShadConfig.opChatOnline.size();
+
+							while (playeron < sizeoflist) {
+
+								String playerstring = "";
+
+									playerstring = ShadConfig.opChatOnline.get(playeron);
+
+
+								Player playersend = Bukkit.getPlayer(playerstring);
+
+								if (playersend != null) {
+									
+									int messagelength = args.length;
+
+										int lengthon = 0;
+
+										String messagetosend = "";
+
+										while (lengthon < messagelength) {
+											messagetosend = messagetosend
+													+ args[lengthon] + " ";
+											lengthon++;
+										}
+
+										String newmessagetosend = messagetosend;
+
+										playersend.sendMessage("§6[§OP§6] §2" + player.getDisplayName()
+												+ "§f: §e" + newmessagetosend);
+										System.out.println("§6[§4OP§6] §2" + player.getDisplayName()
+												+ "§f: §e" + newmessagetosend);
+									
+								}
+
+								playeron++;
+
+							}
+							
+							
+						} else {
+							player.sendMessage(ChatColor.RED
+									+ "You are not in a team!");
+						}
+
 					}
 				}
 				

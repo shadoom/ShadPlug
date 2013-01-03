@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -46,7 +47,7 @@ public class ShadListener implements Listener {
 		if (ShadConfig.instantchat.containsKey(event.getPlayer().getName())) {
 
 			event.setCancelled(true);
-
+			Player player = event.getPlayer();
 			String playername = event.getPlayer().getName();
 
 			List<String> peopletosendto = null;
@@ -69,6 +70,10 @@ public class ShadListener implements Listener {
 
 			int playeron = 0;
 			int sizeoflist = 0;
+			
+			if (player.isOp()) {
+				sizeoflist = ShadConfig.opChatOnline.size();
+			}
 
 			if (team.equals("blue")) {
 				sizeoflist = ShadConfig.bluechatonline.size();
@@ -81,6 +86,11 @@ public class ShadListener implements Listener {
 			while (playeron < sizeoflist) {
 
 				String playerstring = "";
+				
+				if (player.isOp()) {
+					
+					playerstring = ShadConfig.opChatOnline.get(playeron);
+				}
 
 				if (team.equals("blue"))
 					playerstring = ShadConfig.bluechatonline.get(playeron);
@@ -95,15 +105,15 @@ public class ShadListener implements Listener {
 					String message = event.getMessage();
 
 					if (team.equals("red")) {
-						playersend.sendMessage("§6[§4Team§6] §2" + event.getPlayer().getDisplayName()
+						playersend.sendMessage("§6[§4Red§6] §2" + event.getPlayer().getDisplayName()
 								+ "§f: §e" + message);
-						System.out.println("§6[§4Team§6] §2" + event.getPlayer().getDisplayName()
+						System.out.println("§6[§4Red§6] §2" + event.getPlayer().getDisplayName()
 								+ "§f: §e" + message);
 					}
 					if (team.equals("blue")) {
-						playersend.sendMessage("§6[§1Team§6] §2" + event.getPlayer().getDisplayName()
+						playersend.sendMessage("§6[§1Blue§6] §2" + event.getPlayer().getDisplayName()
 								+ "§f: §e" + message);
-						System.out.println("§6[§1Team§6] §2" + event.getPlayer().getDisplayName()
+						System.out.println("§6[§1Blue§6] §2" + event.getPlayer().getDisplayName()
 								+ "§f: §e" + message);
 					}
 				}
@@ -121,6 +131,14 @@ public class ShadListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		String player = event.getPlayer().getName();
+		Player opPlayer = event.getPlayer();
+		if (opPlayer.isOp()) {
+
+			ShadConfig.opChatOnline.add(player);
+
+			plugin.saveConfig();
+		}
+		
 		if (plugin.getConfig().getStringList("ShadPlug.Teams.Red.Members")
 				.contains(player)) {
 
@@ -148,6 +166,13 @@ public class ShadListener implements Listener {
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		String player = event.getPlayer().getName();
+		Player opPlayer = event.getPlayer();
+		if (opPlayer.isOp()) {
+
+			ShadConfig.opChatOnline.remove(player);
+
+			plugin.saveConfig();
+		}
 		if (plugin.getConfig().getStringList("ShadPlug.Teams.Red.Members")
 				.contains(player)) {
 
@@ -257,6 +282,7 @@ public class ShadListener implements Listener {
 						plugin.getServer().broadcastMessage("Blue Killed Red");
 
 						ShadConfig.blueScore++;
+						playerthatkilled.getWorld().playSound(playerthatkilled.getLocation(), Sound.ORB_PICKUP, 10, 1);
 						plugin.getConfig().set("ShadPlug.Teams.Blue.Score",
 								ShadConfig.blueScore);
 
@@ -277,6 +303,7 @@ public class ShadListener implements Listener {
 						plugin.getServer().broadcastMessage("Red Killed Blue");
 
 						ShadConfig.redScore++;
+						playerthatkilled.getWorld().playSound(playerthatkilled.getLocation(), Sound.ORB_PICKUP, 10, 1);
 						plugin.getConfig().set("ShadPlug.Teams.Red.Score",
 								ShadConfig.redScore);
 						plugin.saveConfig();
