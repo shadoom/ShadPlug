@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -22,6 +23,8 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.kitteh.tag.PlayerReceiveNameTagEvent;
+import org.kitteh.tag.TagAPI;
 
 @SuppressWarnings("deprecation")
 public class ShadListener implements Listener {
@@ -373,6 +376,27 @@ public class ShadListener implements Listener {
 			}
 			
 		}
+	}
+	
+	@EventHandler
+	public void onNameTag(PlayerReceiveNameTagEvent event) {
+		
+		Player player = event.getPlayer();
+		String playerNameString = event.getNamedPlayer().getName();
+		if(ShadConfig.TeamBlue.containsKey(event.getNamedPlayer().getName()) && plugin.getConfig().getStringList("ShadPlug.Worlds")
+				.contains(player.getWorld().getName())) {
+			event.setTag(ChatColor.BLUE.toString() + ChatColor.BOLD.toString() + "#" + playerNameString + "#");
+		}
+		if(ShadConfig.TeamRed.containsKey(event.getNamedPlayer().getName()) && plugin.getConfig().getStringList("ShadPlug.Worlds")
+				.contains(player.getWorld().getName())) {
+			event.setTag(ChatColor.RED.toString() + "#" + playerNameString + "#");
+		}
+	}
+	
+	@EventHandler
+	public void onWorldChange(PlayerChangedWorldEvent event){
+		Player player = event.getPlayer();
+		TagAPI.refreshPlayer(player);
 	}
 
 }

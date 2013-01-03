@@ -1,8 +1,5 @@
 package com.shadoom.shadplug;
 
-import net.milkbowl.vault.chat.Chat;
-import net.milkbowl.vault.economy.Economy;
-
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,14 +10,10 @@ public class ShadPlug extends JavaPlugin {
 	public static ShadConfig sConfig;
 	private ShadCommand Commander;
 
-	public static Economy econ = null;
-	public static Chat chat = null;
 	//private static final Logger log = Logger.getLogger("Minecraft");
 
 	@Override
 	public void onEnable() {
-		setupEconomy();
-
 		Commander = new ShadCommand(this);
 		new ShadListener(this);
 		new ShadConfig(this);
@@ -40,19 +33,5 @@ public class ShadPlug extends JavaPlugin {
 
 		saveConfig();
 	}
-
-	private boolean setupEconomy() {
-		if (getServer().getPluginManager().getPlugin("Vault") == null) {
-			return false;
-		}
-		RegisteredServiceProvider<Economy> rsp = getServer()
-				.getServicesManager().getRegistration(Economy.class);
-		if (rsp == null) {
-			return false;
-		}
-		econ = rsp.getProvider();
-		return econ != null;
-	}
-
 
 }
