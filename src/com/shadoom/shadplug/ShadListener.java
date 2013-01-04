@@ -323,7 +323,7 @@ public class ShadListener implements Listener {
 									.contains(playerthatkilled.getWorld()
 											.getName()))) {
 						ShadConfig.blueScore++;
-						plugin.getServer().broadcastMessage(ChatColor.BLUE.toString() + ChatColor.BOLD.toString() + "Blue-" + playerthatkilled.getName() + "(" + ShadConfig.blueScore + ")" + ChatColor.WHITE + " killed " + ChatColor.RED.toString() + ChatColor.BOLD.toString() + "Red-" + playerthatdied.getName() + "(" + ShadConfig.redScore + ")");
+						plugin.getServer().broadcastMessage(ChatColor.BLUE.toString() + "Blue-" + playerthatkilled.getName() + "(" + ShadConfig.blueScore + ")" + ChatColor.WHITE + " killed " + ChatColor.RED.toString() + "Red-" + playerthatdied.getName() + "(" + ShadConfig.redScore + ")");
 
 						event.getDrops().remove(blueWool);
 						event.getDrops().remove(redWool);
@@ -347,7 +347,7 @@ public class ShadListener implements Listener {
 									.contains(playerthatkilled.getWorld()
 											.getName()))) {
 						ShadConfig.redScore++;
-						plugin.getServer().broadcastMessage(ChatColor.RED.toString() + ChatColor.BOLD.toString() + "Red-" + playerthatkilled.getName() + "(" + ShadConfig.redScore + ")" + ChatColor.WHITE + " killed " + ChatColor.BLUE.toString() + ChatColor.BOLD.toString() + "Blue-" + playerthatdied.getName() + "(" + ShadConfig.blueScore + ")");
+						plugin.getServer().broadcastMessage(ChatColor.RED.toString() + "Red-" + playerthatkilled.getName() + "(" + ShadConfig.redScore + ")" + ChatColor.WHITE + " killed " + ChatColor.BLUE.toString() + "Blue-" + playerthatdied.getName() + "(" + ShadConfig.blueScore + ")");
 						event.getDrops().remove(blueWool);
 						event.getDrops().remove(redWool);
 						
@@ -374,7 +374,7 @@ public class ShadListener implements Listener {
 						&& (plugin.getConfig().getStringList("ShadPlug.Worlds")
 								.contains(playerthatkilled.getWorld().getName()))) {
 					ShadConfig.blueScore++;
-					plugin.getServer().broadcastMessage(ChatColor.BLUE.toString() + ChatColor.BOLD.toString() + "Blue-" + playerthatkilled.getName() + "(" + ShadConfig.blueScore + ")" + ChatColor.WHITE + " killed " + ChatColor.RED.toString() + ChatColor.BOLD.toString() + "Red(" + playerthatdied.getName() + "(" + ShadConfig.redScore + ")");
+					plugin.getServer().broadcastMessage(ChatColor.BLUE.toString() + "Blue-" + playerthatkilled.getName() + "(" + ShadConfig.blueScore + ")" + ChatColor.WHITE + " killed " + ChatColor.RED.toString() + "Red-" + playerthatdied.getName() + "(" + ShadConfig.redScore + ")");
 
 					event.getDrops().remove(blueWool);
 					event.getDrops().remove(redWool);
@@ -394,7 +394,7 @@ public class ShadListener implements Listener {
 						&& (plugin.getConfig().getStringList("ShadPlug.Worlds")
 								.contains(playerthatkilled.getWorld().getName()))) {
 					ShadConfig.redScore++;
-					plugin.getServer().broadcastMessage(ChatColor.RED.toString() + ChatColor.BOLD.toString() + "Red-" + playerthatkilled.getName() + "(" + ShadConfig.redScore + ")" +  ChatColor.WHITE + " killed " + ChatColor.BLUE.toString() + ChatColor.BOLD.toString() + "Blue-" + playerthatdied.getName() + "(" + ShadConfig.blueScore + ")");
+					plugin.getServer().broadcastMessage(ChatColor.RED.toString() + "Red-" + playerthatkilled.getName() + "(" + ShadConfig.redScore + ")" +  ChatColor.WHITE + " killed " + ChatColor.BLUE.toString() + "Blue-" + playerthatdied.getName() + "(" + ShadConfig.blueScore + ")");
 
 					event.getDrops().remove(blueWool);
 					event.getDrops().remove(redWool);
@@ -464,7 +464,7 @@ public class ShadListener implements Listener {
 		String playerNameString = event.getNamedPlayer().getName();
 		if(ShadConfig.TeamBlue.containsKey(event.getNamedPlayer().getName()) && plugin.getConfig().getStringList("ShadPlug.Worlds")
 				.contains(player.getWorld().getName())) {
-			event.setTag(ChatColor.BLUE.toString() + ChatColor.BOLD.toString() + playerNameString);
+			event.setTag(ChatColor.BLUE.toString() + playerNameString);
 		}
 		if(ShadConfig.TeamRed.containsKey(event.getNamedPlayer().getName()) && plugin.getConfig().getStringList("ShadPlug.Worlds")
 				.contains(player.getWorld().getName())) {
