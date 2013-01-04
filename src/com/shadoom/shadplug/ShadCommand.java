@@ -351,11 +351,11 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 							+ ChatColor.RED
 							+ "      Lists all members of Team Blue");
 					player.sendMessage(ChatColor.AQUA + "/shad spawn"
-							+ ChatColor.RED + "      Spawn at your Team's HQ");
+							+ ChatColor.RED + "        Spawn at your Team's HQ");
 					player.sendMessage(ChatColor.AQUA + "/sc [TEXT]"
-							+ ChatColor.RED + "      QuickChat with your team");
+							+ ChatColor.RED + "         QuickChat with your team");
 					player.sendMessage(ChatColor.AQUA + "/sc" + ChatColor.RED
-							+ "           Toggle Teamchat");
+							+ "                 Toggle Teamchat");
 					player.sendMessage(ChatColor.AQUA
 							+ "/shad setspawn red/blue" + ChatColor.RED
 							+ "   Setspawn of the Team.");
@@ -363,7 +363,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 							+ ChatColor.RED + "        Reloads the config.yml");
 					player.sendMessage(ChatColor.AQUA + "/shad clear"
 							+ ChatColor.RED
-							+ "        Nullifies everything in config.yml");
+							+ "          Nullifies everything in config.yml");
 					player.sendMessage(ChatColor.AQUA
 							+ "/shad addworld [WORLD]" + ChatColor.RED
 							+ "     Adds [WORLD] to config.yml");

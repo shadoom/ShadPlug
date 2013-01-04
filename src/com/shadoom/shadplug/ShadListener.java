@@ -289,11 +289,15 @@ public class ShadListener implements Listener {
 		}
 	}
 
+
+	
 	/*
 	 * Scoring
 	 */
+	@EventHandler
 	public void onEntityDeath(PlayerDeathEvent event) {
-
+		ItemStack blueWool = new ItemStack(Material.WOOL, 1, (short) 11);
+		ItemStack redWool = new ItemStack(Material.WOOL, 1, (short) 14);
 		Entity entitythatdied = event.getEntity();
 
 		if (entitythatdied instanceof Player) {
@@ -318,10 +322,12 @@ public class ShadListener implements Listener {
 									"ShadPlug.Worlds")
 									.contains(playerthatkilled.getWorld()
 											.getName()))) {
-
-						plugin.getServer().broadcastMessage("Blue Killed Red");
-
 						ShadConfig.blueScore++;
+						plugin.getServer().broadcastMessage(ChatColor.BLUE.toString() + ChatColor.BOLD.toString() + "Blue-" + playerthatkilled.getName() + "(" + ShadConfig.blueScore + ")" + ChatColor.WHITE + " killed " + ChatColor.RED.toString() + ChatColor.BOLD.toString() + "Red-" + playerthatdied.getName() + "(" + ShadConfig.redScore + ")");
+
+						event.getDrops().remove(blueWool);
+						event.getDrops().remove(redWool);
+						
 						playerthatkilled.getWorld().playSound(playerthatkilled.getLocation(), Sound.ORB_PICKUP, 10, 1);
 						plugin.getConfig().set("ShadPlug.Teams.Blue.Score",
 								ShadConfig.blueScore);
@@ -340,14 +346,17 @@ public class ShadListener implements Listener {
 									"ShadPlug.Worlds")
 									.contains(playerthatkilled.getWorld()
 											.getName()))) {
-						plugin.getServer().broadcastMessage("Red Killed Blue");
-
 						ShadConfig.redScore++;
+						plugin.getServer().broadcastMessage(ChatColor.RED.toString() + ChatColor.BOLD.toString() + "Red-" + playerthatkilled.getName() + "(" + ShadConfig.redScore + ")" + ChatColor.WHITE + " killed " + ChatColor.BLUE.toString() + ChatColor.BOLD.toString() + "Blue-" + playerthatdied.getName() + "(" + ShadConfig.blueScore + ")");
+						event.getDrops().remove(blueWool);
+						event.getDrops().remove(redWool);
+						
+						
 						playerthatkilled.getWorld().playSound(playerthatkilled.getLocation(), Sound.ORB_PICKUP, 10, 1);
 						plugin.getConfig().set("ShadPlug.Teams.Red.Score",
 								ShadConfig.redScore);
 						plugin.saveConfig();
-						plugin.saveConfig();
+
 
 					}
 
@@ -364,10 +373,12 @@ public class ShadListener implements Listener {
 								.getName())
 						&& (plugin.getConfig().getStringList("ShadPlug.Worlds")
 								.contains(playerthatkilled.getWorld().getName()))) {
-
-					plugin.getServer().broadcastMessage("Blue Killed Red");
-
 					ShadConfig.blueScore++;
+					plugin.getServer().broadcastMessage(ChatColor.BLUE.toString() + ChatColor.BOLD.toString() + "Blue-" + playerthatkilled.getName() + "(" + ShadConfig.blueScore + ")" + ChatColor.WHITE + " killed " + ChatColor.RED.toString() + ChatColor.BOLD.toString() + "Red(" + playerthatdied.getName() + "(" + ShadConfig.redScore + ")");
+
+					event.getDrops().remove(blueWool);
+					event.getDrops().remove(redWool);
+					
 					plugin.getConfig().set("ShadPlug.Teams.Blue.Score",
 							ShadConfig.blueScore);
 
@@ -382,12 +393,14 @@ public class ShadListener implements Listener {
 								.getName())
 						&& (plugin.getConfig().getStringList("ShadPlug.Worlds")
 								.contains(playerthatkilled.getWorld().getName()))) {
-					plugin.getServer().broadcastMessage("Red Killed Blue");
-
 					ShadConfig.redScore++;
+					plugin.getServer().broadcastMessage(ChatColor.RED.toString() + ChatColor.BOLD.toString() + "Red-" + playerthatkilled.getName() + "(" + ShadConfig.redScore + ")" +  ChatColor.WHITE + " killed " + ChatColor.BLUE.toString() + ChatColor.BOLD.toString() + "Blue-" + playerthatdied.getName() + "(" + ShadConfig.blueScore + ")");
+
+					event.getDrops().remove(blueWool);
+					event.getDrops().remove(redWool);
+					
 					plugin.getConfig().set("ShadPlug.Teams.Red.Score",
 							ShadConfig.redScore);
-					plugin.saveConfig();
 					plugin.saveConfig();
 
 				}
@@ -395,7 +408,6 @@ public class ShadListener implements Listener {
 
 		}
 	}
-
 	/*
 	 * FriendlyFire check
 	 */
@@ -452,11 +464,11 @@ public class ShadListener implements Listener {
 		String playerNameString = event.getNamedPlayer().getName();
 		if(ShadConfig.TeamBlue.containsKey(event.getNamedPlayer().getName()) && plugin.getConfig().getStringList("ShadPlug.Worlds")
 				.contains(player.getWorld().getName())) {
-			event.setTag(ChatColor.BLUE.toString() + ChatColor.BOLD.toString() + "#" + playerNameString + "#");
+			event.setTag(ChatColor.BLUE.toString() + ChatColor.BOLD.toString() + playerNameString);
 		}
 		if(ShadConfig.TeamRed.containsKey(event.getNamedPlayer().getName()) && plugin.getConfig().getStringList("ShadPlug.Worlds")
 				.contains(player.getWorld().getName())) {
-			event.setTag(ChatColor.RED.toString() + "#" + playerNameString + "#");
+			event.setTag(ChatColor.RED.toString() + playerNameString);
 			
 		}
 	}
