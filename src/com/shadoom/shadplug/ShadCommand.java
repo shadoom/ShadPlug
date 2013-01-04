@@ -199,7 +199,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 							playeron++;
 
 						}
-						
+
 						int playeron1 = 0;
 						int sizeoflist1 = 0;
 
@@ -209,7 +209,8 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 
 							String playerstring = "";
 
-							playerstring = ShadConfig.opChatOnline.get(playeron1);
+							playerstring = ShadConfig.opChatOnline
+									.get(playeron1);
 
 							Player playersend = Bukkit.getPlayer(playerstring);
 
@@ -222,23 +223,26 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 								String messagetosend = "";
 
 								while (lengthon < messagelength) {
-									messagetosend = messagetosend + args[lengthon]
-											+ " ";
+									messagetosend = messagetosend
+											+ args[lengthon] + " ";
 									lengthon++;
 								}
 
 								String newmessagetosend = messagetosend;
 
-								if (ShadConfig.redchatonline.contains(playersend
-										.getName()) == false) {
+								if (ShadConfig.redchatonline
+										.contains(playersend.getName()) == false) {
 
 									playersend
 											.sendMessage("§6[§4Red §aOp View§6] §2"
 													+ player.getDisplayName()
-													+ "§f: §e" + newmessagetosend);
-									System.out.println("§6[§4Red §aOp View§6] §2"
-											+ player.getDisplayName() + "§f: §e"
-											+ newmessagetosend);
+													+ "§f: §e"
+													+ newmessagetosend);
+									System.out
+											.println("§6[§4Red §aOp View§6] §2"
+													+ player.getDisplayName()
+													+ "§f: §e"
+													+ newmessagetosend);
 
 								}
 
@@ -322,7 +326,6 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 							+ ChatColor.AQUA + "/shad remworld [WORLD]");
 
 				}
-
 
 				// Display Help
 				if (first.equalsIgnoreCase("help")) {
