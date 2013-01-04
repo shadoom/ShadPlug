@@ -82,10 +82,10 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 
 							String newmessagetosend = messagetosend;
 
-							playersend.sendMessage("§6[§1Team§6] §2"
+							playersend.sendMessage("§6[§1Blue§6] §2"
 									+ player.getDisplayName() + "§f: §e"
 									+ newmessagetosend);
-							System.out.println("§6[§1Team§6] §2"
+							System.out.println("§6[§1Blue§6] §2"
 									+ player.getDisplayName() + "§f: §e"
 									+ newmessagetosend);
 
@@ -187,10 +187,10 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 
 								String newmessagetosend = messagetosend;
 
-								playersend.sendMessage("§6[§4Team§6] §2"
+								playersend.sendMessage("§6[§4Red§6] §2"
 										+ player.getDisplayName() + "§f: §e"
 										+ newmessagetosend);
-								System.out.println("§6[§4Team§6] §2"
+								System.out.println("§6[§4Red§6] §2"
 										+ player.getDisplayName() + "§f: §e"
 										+ newmessagetosend);
 
