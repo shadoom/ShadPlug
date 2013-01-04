@@ -37,7 +37,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 		}
 		// Making sure its a player -- End
 
-		if (commandName.equals("sc")) {
+		if (commandName.equals("sc") && player.hasPermission("ShadPlug.Chat")) {
 
 			if (args.length > 0) {
 
@@ -313,14 +313,14 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				String first;
 				first = args[0];
 
-				if (first.equalsIgnoreCase("addworld")) {
+				if (first.equalsIgnoreCase("addworld") && player.hasPermission("ShadPlug.Admin.Addworld")) {
 					erfolg = true;
 					player.sendMessage(ChatColor.RED + "Correct usage is: "
 							+ ChatColor.AQUA + "/shad addworld [WORLD]");
 
 				}
 
-				if (first.equalsIgnoreCase("remworld")) {
+				if (first.equalsIgnoreCase("remworld") && player.hasPermission("ShadPlug.Admin.Remworld")) {
 					erfolg = true;
 					player.sendMessage(ChatColor.RED + "Correct usage is: "
 							+ ChatColor.AQUA + "/shad remworld [WORLD]");
@@ -371,7 +371,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 					erfolg = true;
 
 				}
-				if (first.equalsIgnoreCase("spawn")) {
+				if (first.equalsIgnoreCase("spawn") && player.hasPermission("ShadPlug.Spawn")) {
 					erfolg = true;
 					if (ShadConfig.TeamBlue.containsKey(player.getName())) {
 						World world;
@@ -445,7 +445,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				}
 
 				// Join a team, Red or Blue
-				if (first.equalsIgnoreCase("join")) {
+				if (first.equalsIgnoreCase("join") && player.hasPermission("ShadPlug.Join")) {
 					erfolg = true;
 					if (plugin.getConfig().isSet("ShadPlug.Spawn.Blue.World")
 							&& plugin.getConfig().isSet(
@@ -602,7 +602,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				/*
 				 * Spit out help how to use SetSpawn command
 				 */
-				if (first.equalsIgnoreCase("setspawn")) {
+				if (first.equalsIgnoreCase("setspawn") && player.hasPermission("ShadPlug.Admin.SetSpawn")) {
 					erfolg = true;
 					player.sendMessage("Correct Usage is" + ChatColor.AQUA
 							+ " /shad setspawn RED/BLUE");
@@ -611,14 +611,14 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				/*
 				 * Reload Config.yml
 				 */
-				if (first.equalsIgnoreCase("reload")) {
+				if (first.equalsIgnoreCase("reload") && player.hasPermission("ShadPlug.Admin.Reload")) {
 					erfolg = true;
 					plugin.reloadConfig();
 					player.sendMessage(ChatColor.AQUA
 							+ "ShadPlugs config.yml has been reloaded.");
 				}
 
-				if (first.equalsIgnoreCase("clear")) {
+				if (first.equalsIgnoreCase("clear") && player.hasPermission("ShadPlug.Admin.Clear")) {
 					erfolg = true;
 					ShadConfig.TeamBlue.clear();
 					ShadConfig.TeamRed.clear();
@@ -667,7 +667,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				/*
 				 * Add a world to the enabled Worlds.
 				 */
-				if (first.equals("addworld")) {
+				if (first.equals("addworld") && player.hasPermission("ShadPlug.Admin.Addworld")) {
 					erfolg = true;
 					List<String> worldList = plugin.getConfig().getStringList(
 							"ShadPlug.Worlds");
@@ -682,7 +682,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				/*
 				 * Remove a world from the enabled Worlds.
 				 */
-				if (first.equals("remworld")) {
+				if (first.equals("remworld") && player.hasPermission("ShadPlug.Admin.Remworld")) {
 					erfolg = true;
 					List<String> worldList = plugin.getConfig().getStringList(
 							"ShadPlug.Worlds");
@@ -700,7 +700,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				 * Set Red spawn
 				 */
 				if (first.equalsIgnoreCase("setspawn")
-						&& second.equalsIgnoreCase("red")) {
+						&& second.equalsIgnoreCase("red") && player.hasPermission("ShadPlug.Admin.SetSpawn")) {
 					erfolg = true;
 					if (player.hasPermission("ShadPlug.Admin.SetSpawn")) {
 						String World = player.getWorld().getName();
@@ -732,7 +732,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				 * Set Blue spawn
 				 */
 				if (first.equalsIgnoreCase("setspawn")
-						&& second.equalsIgnoreCase("blue")) {
+						&& second.equalsIgnoreCase("blue") && player.hasPermission("ShadPlug.Admin.SetSpawn")) {
 					erfolg = true;
 					if (player.hasPermission("ShadPlug.Admin.SetSpawn")) {
 						String World = player.getWorld().getName();

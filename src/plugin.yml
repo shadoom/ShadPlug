@@ -15,3 +15,19 @@ commands:
 permissions:
     ShadPlug.Admin.SetSpawn:
         description: Let's you set the Spawnpoints of both Teams.
+    ShadPlug.Chat:
+        description: Allows them to use Teamchat (Quick and Toggle).
+    ShadPlug.Admin.Addworld:
+        description: Allows them to add a World.
+    ShadPlug.Admin.Remworld:
+        description: Allows them to remove a World.
+    ShadPlug.Spawn:
+        description: Allows them the usage of /shad spawn.
+    ShadPlug.Join:
+        description: Allows them to join a team.
+    ShadPlug.Admin.SetSpawn:
+        description: Allows them to set both Team's spawns.
+    ShadPlug.Admin.Reload:
+        description: Allows them to reload the config.yml
+    ShadPlug.Admin.Clear:
+        description: Allows them to remove all data from all hashmaps and Config.yml.
