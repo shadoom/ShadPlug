@@ -1,7 +1,6 @@
 package com.shadoom.shadplug;
 
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ShadPlug extends JavaPlugin {

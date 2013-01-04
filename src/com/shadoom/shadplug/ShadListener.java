@@ -22,8 +22,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.kitteh.tag.PlayerReceiveNameTagEvent;
 import org.kitteh.tag.TagAPI;
 
@@ -47,7 +45,6 @@ public class ShadListener implements Listener {
 		if (ShadConfig.instantchat.containsKey(event.getPlayer().getName())) {
 
 			event.setCancelled(true);
-			Player player = event.getPlayer();
 			String playername = event.getPlayer().getName();
 
 			List<String> peopletosendto = null;
@@ -71,10 +68,6 @@ public class ShadListener implements Listener {
 			int playeron = 0;
 			int sizeoflist = 0;
 			
-			if (player.isOp()) {
-				sizeoflist = ShadConfig.opChatOnline.size();
-			}
-
 			if (team.equals("blue")) {
 				sizeoflist = ShadConfig.bluechatonline.size();
 			}
@@ -82,16 +75,63 @@ public class ShadListener implements Listener {
 			if (team.equals("red")) {
 				sizeoflist = ShadConfig.redchatonline.size();
 			}
+			
+			int playeron1 = 0;
+			int sizeoflist1 = 0;
+
+			sizeoflist1 = ShadConfig.opChatOnline.size();
+
+			while (playeron1 < sizeoflist1) {
+
+				String playerstring = "";
+
+				playerstring = ShadConfig.opChatOnline.get(playeron1);
+
+				Player playersend = Bukkit.getPlayer(playerstring);
+
+				if (playersend != null) {
+
+
+					String newmessagetosend = event.getMessage();
+
+					if (team.equals("red")) {
+					if (ShadConfig.redchatonline.contains(playersend
+							.getName()) == false) {
+
+						playersend
+								.sendMessage("§6[§4Red §aOp View§6] §2"
+										+ event.getPlayer().getDisplayName()
+										+ "§f: §e" + newmessagetosend);
+						System.out.println("§6[§4Red §aOp View§6] §2"
+								+ event.getPlayer().getDisplayName() + "§f: §e"
+								+ newmessagetosend);
+
+					}
+					}
+					if (team.equals("blue")) {
+					if (ShadConfig.bluechatonline.contains(playersend
+							.getName()) == false) {
+
+						playersend
+								.sendMessage("§6[§1Blue §aOp View§6] §2"
+										+ event.getPlayer().getDisplayName()
+										+ "§f: §e" + newmessagetosend);
+						System.out.println("§6[§1Blue §aOp View§6] §2"
+								+ event.getPlayer().getDisplayName() + "§f: §e"
+								+ newmessagetosend);
+
+					}
+					}
+				}
+
+				playeron1++;
+
+			}
 
 			while (playeron < sizeoflist) {
 
 				String playerstring = "";
 				
-				if (player.isOp()) {
-					
-					playerstring = ShadConfig.opChatOnline.get(playeron);
-				}
-
 				if (team.equals("blue"))
 					playerstring = ShadConfig.bluechatonline.get(playeron);
 
@@ -105,15 +145,15 @@ public class ShadListener implements Listener {
 					String message = event.getMessage();
 
 					if (team.equals("red")) {
-						playersend.sendMessage("§6[§4Red§6] §2" + event.getPlayer().getDisplayName()
+						playersend.sendMessage("§6[§4Team§6] §2" + event.getPlayer().getDisplayName()
 								+ "§f: §e" + message);
-						System.out.println("§6[§4Red§6] §2" + event.getPlayer().getDisplayName()
+						System.out.println("§6[§4Team§6] §2" + event.getPlayer().getDisplayName()
 								+ "§f: §e" + message);
 					}
 					if (team.equals("blue")) {
-						playersend.sendMessage("§6[§1Blue§6] §2" + event.getPlayer().getDisplayName()
+						playersend.sendMessage("§6[§1Team§6] §2" + event.getPlayer().getDisplayName()
 								+ "§f: §e" + message);
-						System.out.println("§6[§1Blue§6] §2" + event.getPlayer().getDisplayName()
+						System.out.println("§6[§1Ream§6] §2" + event.getPlayer().getDisplayName()
 								+ "§f: §e" + message);
 					}
 				}
@@ -130,13 +170,13 @@ public class ShadListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
+				
 		String player = event.getPlayer().getName();
 		Player opPlayer = event.getPlayer();
 		if (opPlayer.isOp()) {
-
-			ShadConfig.opChatOnline.add(player);
-
-			plugin.saveConfig();
+			
+			ShadConfig.opChatOnline.add(opPlayer.getName());
+			
 		}
 		
 		if (plugin.getConfig().getStringList("ShadPlug.Teams.Red.Members")

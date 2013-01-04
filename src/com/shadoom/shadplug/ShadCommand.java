@@ -1,7 +1,5 @@
 package com.shadoom.shadplug;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -40,17 +38,17 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 		// Making sure its a player -- End
 
 		if (commandName.equals("sc")) {
-			
+
 			if (args.length > 0) {
-				
+
 				if (ShadConfig.TeamBlue.containsKey(player.getName())) {
-					
-					//String playername = player.getName();
+
+					// String playername = player.getName();
 
 					List<String> peopletosendto = null;
 
-						peopletosendto = plugin.getConfig().getStringList(
-								"ShadPlug.Teams.Blue.Members");
+					peopletosendto = plugin.getConfig().getStringList(
+							"ShadPlug.Teams.Blue.Members");
 
 					if (peopletosendto == null)
 						return false;
@@ -58,20 +56,124 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 					int playeron = 0;
 					int sizeoflist = 0;
 
-						sizeoflist = ShadConfig.bluechatonline.size();
+					sizeoflist = ShadConfig.bluechatonline.size();
 
 					while (playeron < sizeoflist) {
 
 						String playerstring = "";
 
-							playerstring = ShadConfig.bluechatonline.get(playeron);
-
+						playerstring = ShadConfig.bluechatonline.get(playeron);
 
 						Player playersend = Bukkit.getPlayer(playerstring);
 
 						if (playersend != null) {
-							
+
 							int messagelength = args.length;
+
+							int lengthon = 0;
+
+							String messagetosend = "";
+
+							while (lengthon < messagelength) {
+								messagetosend = messagetosend + args[lengthon]
+										+ " ";
+								lengthon++;
+							}
+
+							String newmessagetosend = messagetosend;
+
+							playersend.sendMessage("§6[§1Team§6] §2"
+									+ player.getDisplayName() + "§f: §e"
+									+ newmessagetosend);
+							System.out.println("§6[§1Team§6] §2"
+									+ player.getDisplayName() + "§f: §e"
+									+ newmessagetosend);
+
+						}
+
+						playeron++;
+
+					}
+
+					int playeron1 = 0;
+					int sizeoflist1 = 0;
+
+					sizeoflist1 = ShadConfig.opChatOnline.size();
+
+					while (playeron1 < sizeoflist1) {
+
+						String playerstring = "";
+
+						playerstring = ShadConfig.opChatOnline.get(playeron1);
+
+						Player playersend = Bukkit.getPlayer(playerstring);
+
+						if (playersend != null) {
+
+							int messagelength = args.length;
+
+							int lengthon = 0;
+
+							String messagetosend = "";
+
+							while (lengthon < messagelength) {
+								messagetosend = messagetosend + args[lengthon]
+										+ " ";
+								lengthon++;
+							}
+
+							String newmessagetosend = messagetosend;
+
+							if (ShadConfig.bluechatonline.contains(playersend
+									.getName()) == false) {
+
+								playersend
+										.sendMessage("§6[§1Blue §aOp View§6] §2"
+												+ player.getDisplayName()
+												+ "§f: §e" + newmessagetosend);
+								System.out.println("§6[§1Blue §aOp View§6] §2"
+										+ player.getDisplayName() + "§f: §e"
+										+ newmessagetosend);
+
+							}
+
+						}
+
+						playeron1++;
+
+					}
+
+				} else {
+
+					if (ShadConfig.TeamRed.containsKey(player.getName())) {
+
+						// String playername = player.getName();
+
+						List<String> peopletosendto = null;
+
+						peopletosendto = plugin.getConfig().getStringList(
+								"ShadPlug.Teams.Red.Members");
+
+						if (peopletosendto == null)
+							return false;
+
+						int playeron = 0;
+						int sizeoflist = 0;
+
+						sizeoflist = ShadConfig.redchatonline.size();
+
+						while (playeron < sizeoflist) {
+
+							String playerstring = "";
+
+							playerstring = ShadConfig.redchatonline
+									.get(playeron);
+
+							Player playersend = Bukkit.getPlayer(playerstring);
+
+							if (playersend != null) {
+
+								int messagelength = args.length;
 
 								int lengthon = 0;
 
@@ -85,155 +187,95 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 
 								String newmessagetosend = messagetosend;
 
-								playersend.sendMessage("§6[§1Team§6] §2" + player.getDisplayName()
-										+ "§f: §e" + newmessagetosend);
-								System.out.println("§6[§1Team§6] §2" + player.getDisplayName()
-										+ "§f: §e" + newmessagetosend);
-							
-						}
+								playersend.sendMessage("§6[§4Team§6] §2"
+										+ player.getDisplayName() + "§f: §e"
+										+ newmessagetosend);
+								System.out.println("§6[§4Team§6] §2"
+										+ player.getDisplayName() + "§f: §e"
+										+ newmessagetosend);
 
-						playeron++;
-
-					}
-					
-				} else {
-					
-					if (ShadConfig.TeamRed.containsKey(player.getName())) {
-						
-						//String playername = player.getName();
-
-						List<String> peopletosendto = null;
-
-							peopletosendto = plugin.getConfig().getStringList(
-									"ShadPlug.Teams.Red.Members");
-
-						if (peopletosendto == null)
-							return false;
-
-						int playeron = 0;
-						int sizeoflist = 0;
-
-							sizeoflist = ShadConfig.redchatonline.size();
-
-						while (playeron < sizeoflist) {
-
-							String playerstring = "";
-
-								playerstring = ShadConfig.redchatonline.get(playeron);
-
-
-							Player playersend = Bukkit.getPlayer(playerstring);
-
-							if (playersend != null) {
-								
-								int messagelength = args.length;
-
-									int lengthon = 0;
-
-									String messagetosend = "";
-
-									while (lengthon < messagelength) {
-										messagetosend = messagetosend
-												+ args[lengthon] + " ";
-										lengthon++;
-									}
-
-									String newmessagetosend = messagetosend;
-
-									playersend.sendMessage("§6[§4Team§6] §2" + player.getDisplayName()
-											+ "§f: §e" + newmessagetosend);
-									System.out.println("§6[§4Team§6] §2" + player.getDisplayName()
-											+ "§f: §e" + newmessagetosend);
-								
 							}
 
 							playeron++;
 
 						}
 						
-						
-					} else {
-						
-						if (player.isOp()) {
-							
-							//String playername = player.getName();
+						int playeron1 = 0;
+						int sizeoflist1 = 0;
 
-							List<String> peopletosendto = null;
+						sizeoflist1 = ShadConfig.opChatOnline.size();
 
-								peopletosendto = plugin.getConfig().getStringList(
-										"ShadPlug.Teams.Red.Members");
+						while (playeron1 < sizeoflist1) {
 
-							if (peopletosendto == null)
-								return false;
+							String playerstring = "";
 
-							int playeron = 0;
-							int sizeoflist = 0;
+							playerstring = ShadConfig.opChatOnline.get(playeron1);
 
-								sizeoflist = ShadConfig.opChatOnline.size();
+							Player playersend = Bukkit.getPlayer(playerstring);
 
-							while (playeron < sizeoflist) {
+							if (playersend != null) {
 
-								String playerstring = "";
+								int messagelength = args.length;
 
-									playerstring = ShadConfig.opChatOnline.get(playeron);
+								int lengthon = 0;
 
+								String messagetosend = "";
 
-								Player playersend = Bukkit.getPlayer(playerstring);
-
-								if (playersend != null) {
-									
-									int messagelength = args.length;
-
-										int lengthon = 0;
-
-										String messagetosend = "";
-
-										while (lengthon < messagelength) {
-											messagetosend = messagetosend
-													+ args[lengthon] + " ";
-											lengthon++;
-										}
-
-										String newmessagetosend = messagetosend;
-
-										playersend.sendMessage("§6[§OP§6] §2" + player.getDisplayName()
-												+ "§f: §e" + newmessagetosend);
-										System.out.println("§6[§4OP§6] §2" + player.getDisplayName()
-												+ "§f: §e" + newmessagetosend);
-									
+								while (lengthon < messagelength) {
+									messagetosend = messagetosend + args[lengthon]
+											+ " ";
+									lengthon++;
 								}
 
-								playeron++;
+								String newmessagetosend = messagetosend;
+
+								if (ShadConfig.redchatonline.contains(playersend
+										.getName()) == false) {
+
+									playersend
+											.sendMessage("§6[§4Red §aOp View§6] §2"
+													+ player.getDisplayName()
+													+ "§f: §e" + newmessagetosend);
+									System.out.println("§6[§4Red §aOp View§6] §2"
+											+ player.getDisplayName() + "§f: §e"
+											+ newmessagetosend);
+
+								}
 
 							}
-							
-							
-						} else {
-							player.sendMessage(ChatColor.RED
-									+ "You are not in a team!");
+
+							playeron1++;
+
 						}
 
+					} else {
+						player.sendMessage(ChatColor.RED
+								+ "You are not in a team!");
 					}
+
 				}
-				
+
 			}
 
 			if (args.length == 0) {
 
-				if (ShadConfig.instantchat.containsKey(player.getName()) == false) {;
+				if (ShadConfig.instantchat.containsKey(player.getName()) == false) {
+					;
 
 					if (ShadConfig.TeamBlue.containsKey(player.getName())) {
-						
+
 						ShadConfig.instantchat.put(player.getName(), "blue");
-						player.sendMessage(ChatColor.GOLD + "Auto chat is now on");
-						
+						player.sendMessage(ChatColor.GOLD
+								+ "Auto chat is now on");
+
 					} else {
-												
+
 						if (ShadConfig.TeamRed.containsKey(player.getName())) {
-							
+
 							ShadConfig.instantchat.put(player.getName(), "red");
-							player.sendMessage(ChatColor.GOLD + "Auto chat is now on");
-							
+							player.sendMessage(ChatColor.GOLD
+									+ "Auto chat is now on");
+
 						} else {
 							player.sendMessage(ChatColor.RED
 									+ "You are not in a team!");
@@ -266,41 +308,21 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 			if (args.length == 1) {
 				String first;
 				first = args[0];
-				
+
 				if (first.equalsIgnoreCase("addworld")) {
 					erfolg = true;
-					player.sendMessage(ChatColor.RED + "Correct usage is: " + ChatColor.AQUA + "/shad addworld [WORLD]");
-					
+					player.sendMessage(ChatColor.RED + "Correct usage is: "
+							+ ChatColor.AQUA + "/shad addworld [WORLD]");
+
 				}
-				
+
 				if (first.equalsIgnoreCase("remworld")) {
 					erfolg = true;
-					player.sendMessage(ChatColor.RED + "Correct usage is: " + ChatColor.AQUA + "/shad remworld [WORLD]");
-					
-				}
-				if (first.equalsIgnoreCase("chat")) {
-					erfolg = true;
-					if (ShadConfig.instantchat.containsKey(player.getName()) == false) {
-
-						if (ShadConfig.TeamBlue.containsKey(player.getName())) {
-
-						} else {
-							if (ShadConfig.TeamRed
-									.containsKey(player.getName())) {
-
-							} else {
-								player.sendMessage(ChatColor.RED
-										+ "You are not in a team!");
-							}
-						}
-
-					} else {
-						ShadConfig.instantchat.remove(player.getName());
-						player.sendMessage(ChatColor.AQUA
-								+ "Auto chat is now off!");
-					}
+					player.sendMessage(ChatColor.RED + "Correct usage is: "
+							+ ChatColor.AQUA + "/shad remworld [WORLD]");
 
 				}
+
 
 				// Display Help
 				if (first.equalsIgnoreCase("help")) {
@@ -326,25 +348,21 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 							+ ChatColor.RED
 							+ "      Lists all members of Team Blue");
 					player.sendMessage(ChatColor.AQUA + "/shad spawn"
-							+ ChatColor.RED
-							+ "      Spawn at your Team's HQ");
+							+ ChatColor.RED + "      Spawn at your Team's HQ");
 					player.sendMessage(ChatColor.AQUA + "/sc [TEXT]"
-							+ ChatColor.RED
-							+ "      QuickChat with your team");
-					player.sendMessage(ChatColor.AQUA + "/sc"
-							+ ChatColor.RED
+							+ ChatColor.RED + "      QuickChat with your team");
+					player.sendMessage(ChatColor.AQUA + "/sc" + ChatColor.RED
 							+ "           Toggle Teamchat");
 					player.sendMessage(ChatColor.AQUA
 							+ "/shad setspawn red/blue" + ChatColor.RED
 							+ "   Setspawn of the Team.");
 					player.sendMessage(ChatColor.AQUA + "/shad reload"
-							+ ChatColor.RED
-							+ "        Reloads the config.yml");
+							+ ChatColor.RED + "        Reloads the config.yml");
 					player.sendMessage(ChatColor.AQUA + "/shad clear"
 							+ ChatColor.RED
 							+ "        Nullifies everything in config.yml");
-					player.sendMessage(ChatColor.AQUA + "/shad addworld [WORLD]"
-							+ ChatColor.RED
+					player.sendMessage(ChatColor.AQUA
+							+ "/shad addworld [WORLD]" + ChatColor.RED
 							+ "     Adds [WORLD] to config.yml");
 					player.sendMessage("===================================");
 					erfolg = true;
@@ -377,9 +395,12 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 											@Override
 											public void run() {
 												player.teleport(location);
-												player.getInventory().setHelmet(
-														new ItemStack(Material.WOOL, 1,
-																(short) 11));
+												player.getInventory()
+														.setHelmet(
+																new ItemStack(
+																		Material.WOOL,
+																		1,
+																		(short) 11));
 											}
 										}, 100L); // 100 ticks (20 ticks = 1
 													// second)
@@ -409,9 +430,12 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 											@Override
 											public void run() {
 												player.teleport(location);
-												player.getInventory().setHelmet(
-														new ItemStack(Material.WOOL, 1,
-																(short) 14));
+												player.getInventory()
+														.setHelmet(
+																new ItemStack(
+																		Material.WOOL,
+																		1,
+																		(short) 14));
 											}
 										}, 100L);
 					}
@@ -452,7 +476,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 								plugin.getConfig().set(
 										"ShadPlug.Teams.Red.Members",
 										teamredList);
-								
+
 								ShadConfig.redchatonline.add(player.getName());
 
 								plugin.saveConfig();
@@ -480,12 +504,14 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 													@Override
 													public void run() {
 														player.teleport(location);
-														player.getInventory().setHelmet(
-																new ItemStack(Material.WOOL, 1,
-																		(short) 14));
+														player.getInventory()
+																.setHelmet(
+																		new ItemStack(
+																				Material.WOOL,
+																				1,
+																				(short) 14));
 													}
 												}, 100L);
-
 
 							} else {
 								teamblueList.add(player.getName());
@@ -494,7 +520,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 								plugin.getServer().broadcastMessage(
 										player.getName()
 												+ " has joined the Blue Team.");
-								
+
 								ShadConfig.bluechatonline.add(player.getName());
 
 								plugin.getConfig().set(
@@ -527,9 +553,12 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 													@Override
 													public void run() {
 														player.teleport(location);
-														player.getInventory().setHelmet(
-																new ItemStack(Material.WOOL, 1,
-																		(short) 11));
+														player.getInventory()
+																.setHelmet(
+																		new ItemStack(
+																				Material.WOOL,
+																				1,
+																				(short) 11));
 													}
 												}, 100L);
 							}
@@ -585,7 +614,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 					player.sendMessage(ChatColor.AQUA
 							+ "ShadPlugs config.yml has been reloaded.");
 				}
-				
+
 				if (first.equalsIgnoreCase("clear")) {
 					erfolg = true;
 					ShadConfig.TeamBlue.clear();
@@ -595,7 +624,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 					ShadConfig.bluechatonline.clear();
 					ShadConfig.redchatonline.clear();
 					ShadConfig.instantchat.clear();
-					
+
 					plugin.getConfig().set("ShadPlug.Spawn.Red", null);
 					plugin.getConfig().set("ShadPlug.Spawn.Red.World", null);
 					plugin.getConfig().set("ShadPlug.Spawn.Red.X", null);
@@ -603,7 +632,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 					plugin.getConfig().set("ShadPlug.Spawn.Red.Z", null);
 					plugin.getConfig().set("ShadPlug.Spawn.Red.Pitch", null);
 					plugin.getConfig().set("ShadPlug.Spawn.Red.Yaw", null);
-					
+
 					plugin.getConfig().set("ShadPlug.Spawn.Blue", null);
 					plugin.getConfig().set("ShadPlug.Spawn.Blue.World", null);
 					plugin.getConfig().set("ShadPlug.Spawn.Blue.X", null);
@@ -611,17 +640,19 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 					plugin.getConfig().set("ShadPlug.Spawn.Blue.Z", null);
 					plugin.getConfig().set("ShadPlug.Spawn.Blue.Pitch", null);
 					plugin.getConfig().set("ShadPlug.Spawn.Blue.Yaw", null);
-					
+
 					plugin.getConfig().set("ShadPlug.Teams.Blue", null);
 					plugin.getConfig().set("ShadPlug.Teams.Blue.Members", null);
-					plugin.getConfig().set("ShadPlug.Teams.Blue.Members.Score", null);
-					
+					plugin.getConfig().set("ShadPlug.Teams.Blue.Members.Score",
+							null);
+
 					plugin.getConfig().set("ShadPlug.Teams.Red", null);
 					plugin.getConfig().set("ShadPlug.Teams.Red.Members", null);
-					plugin.getConfig().set("ShadPlug.Teams.Red.Members.Score", null);					
-					
+					plugin.getConfig().set("ShadPlug.Teams.Red.Members.Score",
+							null);
+
 					plugin.getConfig().set("ShadPlug.Worlds", null);
-					
+
 					plugin.saveConfig();
 				}
 			}
@@ -631,28 +662,37 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				first = args[0];
 				second = args[1];
 				/*
-				 *  Add a world to the enabled Worlds.
+				 * Add a world to the enabled Worlds.
 				 */
-				if (first.equals("addworld")){
+				if (first.equals("addworld")) {
 					erfolg = true;
-					List<String> worldList = plugin.getConfig().getStringList("ShadPlug.Worlds");
+					List<String> worldList = plugin.getConfig().getStringList(
+							"ShadPlug.Worlds");
 					worldList.add(second);
 					plugin.getConfig().set("ShadPlug.Worlds", worldList);
-					player.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD.toString() + second + ChatColor.AQUA + " has been added to the enabled Worlds.");
+					player.sendMessage(ChatColor.RED.toString()
+							+ ChatColor.BOLD.toString() + second
+							+ ChatColor.AQUA
+							+ " has been added to the enabled Worlds.");
 					plugin.saveConfig();
 				}
 				/*
-				 *  Remove a world from the enabled Worlds.
+				 * Remove a world from the enabled Worlds.
 				 */
-				if (first.equals("remworld")){
+				if (first.equals("remworld")) {
 					erfolg = true;
-					List<String> worldList = plugin.getConfig().getStringList("ShadPlug.Worlds");
+					List<String> worldList = plugin.getConfig().getStringList(
+							"ShadPlug.Worlds");
 					worldList.remove(second);
 					plugin.getConfig().set("ShadPlug.Worlds", worldList);
-					player.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD.toString() + second + ChatColor.AQUA + " has been " + ChatColor.RED + "removed" + ChatColor.AQUA + " from the enabled Worlds.");
+					player.sendMessage(ChatColor.RED.toString()
+							+ ChatColor.BOLD.toString() + second
+							+ ChatColor.AQUA + " has been " + ChatColor.RED
+							+ "removed" + ChatColor.AQUA
+							+ " from the enabled Worlds.");
 					plugin.saveConfig();
 				}
-				
+
 				/*
 				 * Set Red spawn
 				 */
@@ -667,8 +707,13 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 						double spawnZ = player.getLocation().getZ();
 						float pitch = location.getPitch();
 						float yaw = location.getYaw();
-						if(!plugin.getConfig().getStringList("ShadPlug.Worlds").contains(World)) {
-							player.sendMessage(ChatColor.RED + "WARNING:" + ChatColor.AQUA + " The world where you just set Spawn is not enabled in the config.yml");
+						if (!plugin.getConfig()
+								.getStringList("ShadPlug.Worlds")
+								.contains(World)) {
+							player.sendMessage(ChatColor.RED
+									+ "WARNING:"
+									+ ChatColor.AQUA
+									+ " The world where you just set Spawn is not enabled in the config.yml");
 						}
 						ShadConfig.savePosToConfigRed(1, World, spawnX, spawnY,
 								spawnZ, pitch, yaw);
@@ -694,8 +739,13 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 						double spawnZ = player.getLocation().getZ();
 						float pitch = location.getPitch();
 						float yaw = location.getYaw();
-						if(!plugin.getConfig().getStringList("ShadPlug.Worlds").contains(World)) {
-							player.sendMessage(ChatColor.RED + "WARNING:" + ChatColor.AQUA + " The world where you just set Spawn is not enabled in the config.yml");
+						if (!plugin.getConfig()
+								.getStringList("ShadPlug.Worlds")
+								.contains(World)) {
+							player.sendMessage(ChatColor.RED
+									+ "WARNING:"
+									+ ChatColor.AQUA
+									+ " The world where you just set Spawn is not enabled in the config.yml");
 						}
 						ShadConfig.savePosToConfigBlue(1, World, spawnX,
 								spawnY, spawnZ, pitch, yaw);
@@ -708,7 +758,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 					}
 
 				}
-				
+
 				/*
 				 * List Red and Blue players.
 				 */
