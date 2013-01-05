@@ -3,7 +3,7 @@ main: com.shadoom.shadplug.ShadPlug
 version: 1.0
 author: ShaDooM
 website: http://www.shadoom.com/
-softdepend: [Vault]
+softdepend: [Vault, TagAPI]
 
 commands:
     shad:
