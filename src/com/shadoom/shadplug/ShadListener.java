@@ -145,15 +145,15 @@ public class ShadListener implements Listener {
 					String message = event.getMessage();
 
 					if (team.equals("red")) {
-						playersend.sendMessage("§6[§4Team§6] §2" + event.getPlayer().getDisplayName()
+						playersend.sendMessage("§6[§4Red§6] §2" + event.getPlayer().getDisplayName()
 								+ "§f: §e" + message);
-						System.out.println("§6[§4Team§6] §2" + event.getPlayer().getDisplayName()
+						System.out.println("§6[§4Red§6] §2" + event.getPlayer().getDisplayName()
 								+ "§f: §e" + message);
 					}
 					if (team.equals("blue")) {
-						playersend.sendMessage("§6[§1Team§6] §2" + event.getPlayer().getDisplayName()
+						playersend.sendMessage("§6[§1Blue§6] §2" + event.getPlayer().getDisplayName()
 								+ "§f: §e" + message);
-						System.out.println("§6[§1Ream§6] §2" + event.getPlayer().getDisplayName()
+						System.out.println("§6[§1Blue§6] §2" + event.getPlayer().getDisplayName()
 								+ "§f: §e" + message);
 					}
 				}
@@ -299,7 +299,16 @@ public class ShadListener implements Listener {
 		ItemStack blueWool = new ItemStack(Material.WOOL, 1, (short) 11);
 		ItemStack redWool = new ItemStack(Material.WOOL, 1, (short) 14);
 		Entity entitythatdied = event.getEntity();
-
+		
+		
+		if (plugin.getConfig().getStringList("ShadPlug.Worlds").contains(event.getEntity().getWorld())) {
+			
+			event.getDrops().remove(blueWool);
+			event.getDrops().remove(redWool);
+			
+		}
+		
+		
 		if (entitythatdied instanceof Player) {
 
 			Player playerthatdied = (Player) entitythatdied;

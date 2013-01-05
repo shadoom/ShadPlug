@@ -374,7 +374,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				if (first.equalsIgnoreCase("spawn") && player.hasPermission("ShadPlug.Spawn")) {
 					erfolg = true;
 					if (ShadConfig.TeamBlue.containsKey(player.getName())) {
-						World world;
+						final World world;
 						world = Bukkit.getServer().getWorld(
 								plugin.getConfig().getString(
 										"ShadPlug.Spawn.Blue.World"));
@@ -389,28 +389,35 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 										"ShadPlug.Spawn.Blue.Yaw"),
 								(float) plugin.getConfig().getDouble(
 										"ShadPlug.Spawn.Blue.Pitch"));
-						player.sendMessage("You will be ported to the Blue base in 5 seconds.");
+						final Location pLocationBefore = new Location(world, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
+						player.sendMessage("DONT MOVE. You will be ported to the Blue base in 5 seconds.");
 						plugin.getServer()
 								.getScheduler()
 								.scheduleSyncDelayedTask(plugin,
 										new Runnable() {
-
+											
 											@Override
 											public void run() {
-												player.teleport(location);
-												player.getInventory()
-														.setHelmet(
-																new ItemStack(
-																		Material.WOOL,
-																		1,
-																		(short) 11));
+												Location pLocationAfter = new Location(world, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
+												if(pLocationBefore.equals(pLocationAfter)){
+													player.teleport(location);
+													player.getInventory()
+															.setHelmet(
+																	new ItemStack(
+																			Material.WOOL,
+																			1,
+																			(short) 11));
+												} else {
+													player.sendMessage("You have moved. Teleport cancelled.");
+												}
+
 											}
 										}, 100L); // 100 ticks (20 ticks = 1
 													// second)
 					}
 
 					if (ShadConfig.TeamRed.containsKey(player.getName())) {
-						World world;
+						final World world;
 						world = Bukkit.getServer().getWorld(
 								plugin.getConfig().getString(
 										"ShadPlug.Spawn.Red.World"));
@@ -424,7 +431,8 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 										"ShadPlug.Spawn.Red.Yaw"),
 								(float) plugin.getConfig().getDouble(
 										"ShadPlug.Spawn.Red.Pitch"));
-						player.sendMessage("You will be ported to the Red base in 5 seconds.");
+						final Location pLocationBefore = new Location(world, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
+						player.sendMessage("DONT MOVE. You will be ported to the Red base in 5 seconds.");
 						plugin.getServer()
 								.getScheduler()
 								.scheduleSyncDelayedTask(plugin,
@@ -432,6 +440,8 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 
 											@Override
 											public void run() {
+												Location pLocationAfter = new Location(world, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
+												if(pLocationBefore.equals(pLocationAfter)){
 												player.teleport(location);
 												player.getInventory()
 														.setHelmet(
@@ -439,6 +449,9 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 																		Material.WOOL,
 																		1,
 																		(short) 14));
+												} else {
+													player.sendMessage("You have moved. Teleport cancelled.");
+												}
 											}
 										}, 100L);
 					}
@@ -475,7 +488,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 								ShadConfig.TeamRed.put(player.getName(), "red");
 								plugin.getServer().broadcastMessage(
 										player.getName()
-												+ " has joined the Red Team.");
+												+ " has joined the "+ ChatColor.RED +"Red " + ChatColor.WHITE +"Team.");
 								plugin.getConfig().set(
 										"ShadPlug.Teams.Red.Members",
 										teamredList);
@@ -498,7 +511,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 												"ShadPlug.Spawn.Red.Yaw"),
 										(float) plugin.getConfig().getDouble(
 												"ShadPlug.Spawn.Red.Pitch"));
-								player.sendMessage("You will be ported to the Red base in 5 seconds.");
+								player.sendMessage("You will be ported to the " + ChatColor.RED + "Red " + ChatColor.WHITE + "base in 5 seconds.");
 								plugin.getServer()
 										.getScheduler()
 										.scheduleSyncDelayedTask(plugin,
@@ -513,7 +526,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 																				Material.WOOL,
 																				1,
 																				(short) 14));
-													}
+													} 
 												}, 100L);
 
 							} else {
@@ -522,7 +535,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 										"blue");
 								plugin.getServer().broadcastMessage(
 										player.getName()
-												+ " has joined the Blue Team.");
+												+ " has joined the " + ChatColor.BLUE + "Blue " + ChatColor.WHITE + "Team.");
 
 								ShadConfig.bluechatonline.add(player.getName());
 
@@ -547,7 +560,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 										(float) plugin.getConfig().getDouble(
 												"ShadPlug.Spawn.Blue.Pitch"));
 
-								player.sendMessage("You will be ported to the Blue base in 5 seconds.");
+								player.sendMessage("You will be ported to the " + ChatColor.BLUE + "Blue " + ChatColor.WHITE + "base in 5 seconds.");
 								plugin.getServer()
 										.getScheduler()
 										.scheduleSyncDelayedTask(plugin,

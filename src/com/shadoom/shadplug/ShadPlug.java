@@ -1,7 +1,10 @@
 package com.shadoom.shadplug;
 
+
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+
+
 
 public class ShadPlug extends JavaPlugin {
 
@@ -9,6 +12,7 @@ public class ShadPlug extends JavaPlugin {
 	public static ShadConfig sConfig;
 	private ShadCommand Commander;
 
+	
 	//private static final Logger log = Logger.getLogger("Minecraft");
 
 	@Override
@@ -17,6 +21,7 @@ public class ShadPlug extends JavaPlugin {
 		new ShadListener(this);
 		new ShadConfig(this);
 		ShadConfig.manageConfig();
+		
 		reloadConfig();
 		getCommand("shad").setExecutor(Commander);
 		getCommand("sc").setExecutor(Commander);
