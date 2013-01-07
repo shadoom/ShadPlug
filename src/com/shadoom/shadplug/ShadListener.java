@@ -62,6 +62,12 @@ public class ShadListener implements Listener {
 						"ShadPlug.Teams.Blue.Members");
 				team = "blue";
 			}
+			if (ShadConfig.instantchat.get(playername).equals("green")) {
+				peopletosendto = plugin.getConfig().getStringList(
+						"ShadPlug.Teams.Green.Members");
+				team = "green";
+			}
+
 
 			if (peopletosendto == null)
 				return;
@@ -75,6 +81,10 @@ public class ShadListener implements Listener {
 
 			if (team.equals("red")) {
 				sizeoflist = ShadConfig.redchatonline.size();
+			}
+			
+			if (team.equals("green")) {
+				sizeoflist = ShadConfig.greenchatonline.size();
 			}
 
 			int playeron1 = 0;
@@ -120,6 +130,19 @@ public class ShadListener implements Listener {
 
 						}
 					}
+					if (team.equals("green")) {
+						if (ShadConfig.greenchatonline.contains(playersend
+								.getName()) == false) {
+
+							playersend.sendMessage("§6[§aGreen §aOp View§6] §2"
+									+ event.getPlayer().getDisplayName()
+									+ "§f: §e" + newmessagetosend);
+							System.out.println("§6[§aGreen §aOp View§6] §2"
+									+ event.getPlayer().getDisplayName()
+									+ "§f: §e" + newmessagetosend);
+
+						}
+					}
 				}
 
 				playeron1++;
@@ -135,6 +158,9 @@ public class ShadListener implements Listener {
 
 				if (team.equals("red"))
 					playerstring = ShadConfig.redchatonline.get(playeron);
+				
+				if (team.equals("green"))
+					playerstring = ShadConfig.greenchatonline.get(playeron);
 
 				Player playersend = Bukkit.getPlayer(playerstring);
 
@@ -155,6 +181,14 @@ public class ShadListener implements Listener {
 								+ event.getPlayer().getDisplayName() + "§f: §e"
 								+ message);
 						System.out.println("§6[§1Blue§6] §2"
+								+ event.getPlayer().getDisplayName() + "§f: §e"
+								+ message);
+					}
+					if (team.equals("green")) {
+						playersend.sendMessage("§6[§aGreen§6] §2"
+								+ event.getPlayer().getDisplayName() + "§f: §e"
+								+ message);
+						System.out.println("§6[§aGreen§6] §2"
 								+ event.getPlayer().getDisplayName() + "§f: §e"
 								+ message);
 					}
@@ -191,6 +225,16 @@ public class ShadListener implements Listener {
 			plugin.saveConfig();
 		}
 
+		if (plugin.getConfig().getStringList("ShadPlug.Teams.Green.Members")
+				.contains(player)) {
+
+			ShadConfig.TeamGreen.put(player, "green");
+
+			ShadConfig.greenchatonline.add(player);
+
+			plugin.saveConfig();
+		}
+		
 		if (plugin.getConfig().getStringList("ShadPlug.Teams.Blue.Members")
 				.contains(player)) {
 			ShadConfig.TeamBlue.put(player, "blue");
@@ -221,6 +265,15 @@ public class ShadListener implements Listener {
 			ShadConfig.TeamRed.remove(player);
 
 			ShadConfig.redchatonline.remove(player);
+
+			plugin.saveConfig();
+		}
+		
+		if (plugin.getConfig().getStringList("ShadPlug.Teams.Green.Members")
+				.contains(player)) {
+			ShadConfig.TeamGreen.remove(player);
+
+			ShadConfig.greenchatonline.remove(player);
 
 			plugin.saveConfig();
 		}
@@ -285,6 +338,26 @@ public class ShadListener implements Listener {
 				player.getInventory().setHelmet(
 						new ItemStack(Material.WOOL, 1, (short) 11));
 			}
+			
+			if (ShadConfig.TeamGreen.containsKey(player.getPlayer().getName())) {
+				World world;
+				world = plugin.getServer().getWorld(
+						plugin.getConfig().getString(
+								"ShadPlug.Spawn.Green.World"));
+				Location location = new Location(world, plugin.getConfig()
+						.getDouble("ShadPlug.Spawn.Green.X"), plugin.getConfig()
+						.getDouble("ShadPlug.Spawn.Green.Y"), plugin.getConfig()
+						.getDouble("ShadPlug.Spawn.Green.Z"), (float) plugin
+						.getConfig().getDouble("ShadPlug.Spawn.Green.Yaw"),
+						(float) plugin.getConfig().getDouble(
+								"ShadPlug.Spawn.Green.Pitch"));
+				event.setRespawnLocation(location);
+				player.sendMessage("You have been respawned at the Team "
+						+ ChatColor.GREEN + "Green" + ChatColor.WHITE + "'s HQ.");
+				player.getInventory().setHelmet(
+						new ItemStack(Material.WOOL, 1, (short) 5));
+			}
+
 
 		}
 	}
@@ -296,6 +369,7 @@ public class ShadListener implements Listener {
 	public void onEntityDeath(PlayerDeathEvent event) {
 		ItemStack blueWool = new ItemStack(Material.WOOL, 1, (short) 11);
 		ItemStack redWool = new ItemStack(Material.WOOL, 1, (short) 14);
+		ItemStack greenWool = new ItemStack(Material.WOOL, 1, (short) 5);
 		Entity entitythatdied = event.getEntity();
 
 		if (plugin.getConfig().getStringList("ShadPlug.Worlds")
@@ -303,6 +377,7 @@ public class ShadListener implements Listener {
 
 			event.getDrops().remove(blueWool);
 			event.getDrops().remove(redWool);
+			event.getDrops().remove(greenWool);
 
 		}
 
@@ -320,14 +395,7 @@ public class ShadListener implements Listener {
 
 					Player playerthatkilled = (Player) shooter;
 
-					if (ShadConfig.TeamBlue.containsKey(playerthatkilled
-							.getName())
-							&& ShadConfig.TeamRed.containsKey(playerthatdied
-									.getName())
-							&& (plugin.getConfig().getStringList(
-									"ShadPlug.Worlds")
-									.contains(playerthatkilled.getWorld()
-											.getName()))) {
+					if (ShadConfig.TeamBlue.containsKey(playerthatkilled.getName())	&& ShadConfig.TeamRed.containsKey(playerthatdied.getName())	&& (plugin.getConfig().getStringList("ShadPlug.Worlds").contains(playerthatkilled.getWorld().getName()))) {
 						ShadConfig.blueScore++;
 						plugin.getServer().broadcastMessage(
 								ChatColor.BLUE.toString() + "Blue-"
@@ -338,7 +406,7 @@ public class ShadListener implements Listener {
 										+ playerthatdied.getName() + "("
 										+ ShadConfig.redScore + ")");
 
-						event.getDrops().remove(blueWool);
+						
 						event.getDrops().remove(redWool);
 
 						playerthatkilled.getWorld().playSound(
@@ -353,6 +421,34 @@ public class ShadListener implements Listener {
 						plugin.saveConfig();
 
 					}
+					
+					if (ShadConfig.TeamBlue.containsKey(playerthatkilled.getName())	&& ShadConfig.TeamGreen.containsKey(playerthatdied.getName())	&& (plugin.getConfig().getStringList("ShadPlug.Worlds").contains(playerthatkilled.getWorld().getName()))) {
+						ShadConfig.blueScore++;
+						plugin.getServer().broadcastMessage(
+								ChatColor.BLUE.toString() + "Blue-"
+										+ playerthatkilled.getName() + "("
+										+ ShadConfig.blueScore + ")"
+										+ ChatColor.WHITE + " killed "
+										+ ChatColor.GREEN.toString() + "Green-"
+										+ playerthatdied.getName() + "("
+										+ ShadConfig.greenScore + ")");
+
+						
+						event.getDrops().remove(greenWool);
+
+						playerthatkilled.getWorld().playSound(
+								playerthatkilled.getLocation(),
+								Sound.ORB_PICKUP, 10, 1);
+						plugin.getConfig().set("ShadPlug.Teams.Blue.Score",
+								ShadConfig.blueScore);
+
+						ShadConfig.lastworlddeath.put(playerthatdied.getName(),
+								playerthatdied.getWorld().getName());
+
+						plugin.saveConfig();
+
+					}
+					
 					if (ShadConfig.TeamRed.containsKey(playerthatkilled
 							.getName())
 							&& ShadConfig.TeamBlue.containsKey(playerthatdied
@@ -371,13 +467,106 @@ public class ShadListener implements Listener {
 										+ playerthatdied.getName() + "("
 										+ ShadConfig.blueScore + ")");
 						event.getDrops().remove(blueWool);
-						event.getDrops().remove(redWool);
-
+						
+						ShadConfig.lastworlddeath.put(playerthatdied.getName(),
+								playerthatdied.getWorld().getName());
 						playerthatkilled.getWorld().playSound(
 								playerthatkilled.getLocation(),
 								Sound.ORB_PICKUP, 10, 1);
 						plugin.getConfig().set("ShadPlug.Teams.Red.Score",
 								ShadConfig.redScore);
+						plugin.saveConfig();
+
+					}
+					
+					if (ShadConfig.TeamRed.containsKey(playerthatkilled
+							.getName())
+							&& ShadConfig.TeamGreen.containsKey(playerthatdied
+									.getName())
+							&& (plugin.getConfig().getStringList(
+									"ShadPlug.Worlds")
+									.contains(playerthatkilled.getWorld()
+											.getName()))) {
+						ShadConfig.redScore++;
+						plugin.getServer().broadcastMessage(
+								ChatColor.RED.toString() + "Red-"
+										+ playerthatkilled.getName() + "("
+										+ ShadConfig.redScore + ")"
+										+ ChatColor.WHITE + " killed "
+										+ ChatColor.GREEN.toString() + "Green-"
+										+ playerthatdied.getName() + "("
+										+ ShadConfig.greenScore + ")");
+						event.getDrops().remove(greenWool);
+						
+						ShadConfig.lastworlddeath.put(playerthatdied.getName(),
+								playerthatdied.getWorld().getName());
+						playerthatkilled.getWorld().playSound(
+								playerthatkilled.getLocation(),
+								Sound.ORB_PICKUP, 10, 1);
+						plugin.getConfig().set("ShadPlug.Teams.Red.Score",
+								ShadConfig.redScore);
+						plugin.saveConfig();
+
+					}
+					
+					
+					
+					if (ShadConfig.TeamGreen.containsKey(playerthatkilled
+							.getName())
+							&& ShadConfig.TeamRed.containsKey(playerthatdied
+									.getName())
+							&& (plugin.getConfig().getStringList(
+									"ShadPlug.Worlds")
+									.contains(playerthatkilled.getWorld()
+											.getName()))) {
+						ShadConfig.greenScore++;
+						plugin.getServer().broadcastMessage(
+								ChatColor.GREEN.toString() + "Green-"
+										+ playerthatkilled.getName() + "("
+										+ ShadConfig.greenScore + ")"
+										+ ChatColor.WHITE + " killed "
+										+ ChatColor.RED.toString() + "Red-"
+										+ playerthatdied.getName() + "("
+										+ ShadConfig.redScore + ")");
+						event.getDrops().remove(redWool);
+						
+						ShadConfig.lastworlddeath.put(playerthatdied.getName(),
+								playerthatdied.getWorld().getName());
+						playerthatkilled.getWorld().playSound(
+								playerthatkilled.getLocation(),
+								Sound.ORB_PICKUP, 10, 1);
+						plugin.getConfig().set("ShadPlug.Teams.Green.Score",
+								ShadConfig.greenScore);
+						plugin.saveConfig();
+
+					}
+					
+					if (ShadConfig.TeamGreen.containsKey(playerthatkilled
+							.getName())
+							&& ShadConfig.TeamBlue.containsKey(playerthatdied
+									.getName())
+							&& (plugin.getConfig().getStringList(
+									"ShadPlug.Worlds")
+									.contains(playerthatkilled.getWorld()
+											.getName()))) {
+						ShadConfig.greenScore++;
+						plugin.getServer().broadcastMessage(
+								ChatColor.GREEN.toString() + "Green-"
+										+ playerthatkilled.getName() + "("
+										+ ShadConfig.greenScore + ")"
+										+ ChatColor.WHITE + " killed "
+										+ ChatColor.BLUE.toString() + "Blue-"
+										+ playerthatdied.getName() + "("
+										+ ShadConfig.blueScore + ")");
+						event.getDrops().remove(blueWool);
+						
+						ShadConfig.lastworlddeath.put(playerthatdied.getName(),
+								playerthatdied.getWorld().getName());
+						playerthatkilled.getWorld().playSound(
+								playerthatkilled.getLocation(),
+								Sound.ORB_PICKUP, 10, 1);
+						plugin.getConfig().set("ShadPlug.Teams.Green.Score",
+								ShadConfig.greenScore);
 						plugin.saveConfig();
 
 					}
@@ -417,6 +606,33 @@ public class ShadListener implements Listener {
 					plugin.saveConfig();
 
 				}
+				if (ShadConfig.TeamBlue.containsKey(playerthatkilled.getName())
+						&& ShadConfig.TeamGreen.containsKey(playerthatdied
+								.getName())
+						&& (plugin.getConfig().getStringList("ShadPlug.Worlds")
+								.contains(playerthatkilled.getWorld().getName()))) {
+					ShadConfig.blueScore++;
+					plugin.getServer().broadcastMessage(
+							ChatColor.BLUE.toString() + "Blue-"
+									+ playerthatkilled.getName() + "("
+									+ ShadConfig.blueScore + ")"
+									+ ChatColor.WHITE + " killed "
+									+ ChatColor.GREEN.toString() + "Green-"
+									+ playerthatdied.getName() + "("
+									+ ShadConfig.greenScore + ")");
+
+					
+					event.getDrops().remove(greenWool);
+
+					plugin.getConfig().set("ShadPlug.Teams.Blue.Score",
+							ShadConfig.blueScore);
+
+					ShadConfig.lastworlddeath.put(playerthatdied.getName(),
+							playerthatdied.getWorld().getName());
+
+					plugin.saveConfig();
+
+				}
 				if (ShadConfig.TeamRed.containsKey(playerthatkilled.getName())
 						&& ShadConfig.TeamBlue.containsKey(playerthatdied
 								.getName())
@@ -435,8 +651,84 @@ public class ShadListener implements Listener {
 					event.getDrops().remove(blueWool);
 					event.getDrops().remove(redWool);
 
+					ShadConfig.lastworlddeath.put(playerthatdied.getName(),
+							playerthatdied.getWorld().getName());
 					plugin.getConfig().set("ShadPlug.Teams.Red.Score",
 							ShadConfig.redScore);
+					plugin.saveConfig();
+
+				}
+				if (ShadConfig.TeamRed.containsKey(playerthatkilled.getName())
+						&& ShadConfig.TeamGreen.containsKey(playerthatdied
+								.getName())
+						&& (plugin.getConfig().getStringList("ShadPlug.Worlds")
+								.contains(playerthatkilled.getWorld().getName()))) {
+					ShadConfig.redScore++;
+					plugin.getServer().broadcastMessage(
+							ChatColor.RED.toString() + "Red-"
+									+ playerthatkilled.getName() + "("
+									+ ShadConfig.redScore + ")"
+									+ ChatColor.WHITE + " killed "
+									+ ChatColor.GREEN.toString() + "Green-"
+									+ playerthatdied.getName() + "("
+									+ ShadConfig.greenScore + ")");
+
+					event.getDrops().remove(greenWool);
+					
+					ShadConfig.lastworlddeath.put(playerthatdied.getName(),
+							playerthatdied.getWorld().getName());
+					plugin.getConfig().set("ShadPlug.Teams.Red.Score",
+							ShadConfig.redScore);
+					plugin.saveConfig();
+
+				}
+				
+				if (ShadConfig.TeamGreen.containsKey(playerthatkilled.getName())
+						&& ShadConfig.TeamBlue.containsKey(playerthatdied
+								.getName())
+						&& (plugin.getConfig().getStringList("ShadPlug.Worlds")
+								.contains(playerthatkilled.getWorld().getName()))) {
+					ShadConfig.greenScore++;
+					plugin.getServer().broadcastMessage(
+							ChatColor.GREEN.toString() + "Green-"
+									+ playerthatkilled.getName() + "("
+									+ ShadConfig.greenScore + ")"
+									+ ChatColor.WHITE + " killed "
+									+ ChatColor.BLUE.toString() + "Blue-"
+									+ playerthatdied.getName() + "("
+									+ ShadConfig.blueScore + ")");
+
+					event.getDrops().remove(blueWool);
+					
+
+					ShadConfig.lastworlddeath.put(playerthatdied.getName(),
+							playerthatdied.getWorld().getName());
+					plugin.getConfig().set("ShadPlug.Teams.Green.Score",
+							ShadConfig.greenScore);
+					plugin.saveConfig();
+
+				}
+				if (ShadConfig.TeamGreen.containsKey(playerthatkilled.getName())
+						&& ShadConfig.TeamRed.containsKey(playerthatdied
+								.getName())
+						&& (plugin.getConfig().getStringList("ShadPlug.Worlds")
+								.contains(playerthatkilled.getWorld().getName()))) {
+					ShadConfig.greenScore++;
+					plugin.getServer().broadcastMessage(
+							ChatColor.GREEN.toString() + "Green-"
+									+ playerthatkilled.getName() + "("
+									+ ShadConfig.greenScore + ")"
+									+ ChatColor.WHITE + " killed "
+									+ ChatColor.RED.toString() + "Red-"
+									+ playerthatdied.getName() + "("
+									+ ShadConfig.redScore + ")");
+
+					event.getDrops().remove(redWool);
+					
+					ShadConfig.lastworlddeath.put(playerthatdied.getName(),
+							playerthatdied.getWorld().getName());
+					plugin.getConfig().set("ShadPlug.Teams.Green.Score",
+							ShadConfig.greenScore);
 					plugin.saveConfig();
 
 				}
@@ -490,6 +782,19 @@ public class ShadListener implements Listener {
 						playerDamager.sendMessage(ChatColor.LIGHT_PURPLE
 								+ "Do not attack your Teammates!");
 					}
+					if (ShadConfig.TeamGreen
+							.containsKey(damagedPlayer.getName())
+							&& ShadConfig.TeamGreen.containsKey(playerDamager
+									.getName().toString())
+							&& plugin
+									.getConfig()
+									.getStringList("ShadPlug.Worlds")
+									.contains(
+											playerDamager.getWorld().getName())) {
+						event.setCancelled(true);
+						playerDamager.sendMessage(ChatColor.LIGHT_PURPLE
+								+ "Do not attack your Teammates!");
+					}
 
 				}
 
@@ -513,6 +818,14 @@ public class ShadListener implements Listener {
 					attacker.sendMessage(ChatColor.LIGHT_PURPLE
 							+ "Do not attack your Teammates!");
 				}
+				if (ShadConfig.TeamGreen.containsKey(defender.getName())
+						&& ShadConfig.TeamGreen.containsKey(attacker.getName())
+						&& plugin.getConfig().getStringList("ShadPlug.Worlds")
+								.contains(attacker.getWorld().getName())) {
+					event.setCancelled(true);
+					attacker.sendMessage(ChatColor.LIGHT_PURPLE
+							+ "Do not attack your Teammates!");
+				}
 			}
 		}
 
@@ -526,7 +839,7 @@ public class ShadListener implements Listener {
 		Player player = (Player) event.getWhoClicked();
 
 		if (event.getWhoClicked() instanceof Player
-				&& (ShadConfig.TeamBlue.containsKey(player.getName()) || ShadConfig.TeamRed
+				&& (ShadConfig.TeamBlue.containsKey(player.getName()) || ShadConfig.TeamGreen.containsKey(player.getName())|| ShadConfig.TeamRed
 						.containsKey(player.getName()))
 				&& plugin.getConfig().getStringList("ShadPlug.Worlds")
 						.contains(player.getWorld().getName())) {
@@ -554,6 +867,12 @@ public class ShadListener implements Listener {
 				&& plugin.getConfig().getStringList("ShadPlug.Worlds")
 						.contains(player.getWorld().getName())) {
 			event.setTag(ChatColor.RED.toString() + playerNameString);
+
+		}
+		if (ShadConfig.TeamGreen.containsKey(event.getNamedPlayer().getName())
+				&& plugin.getConfig().getStringList("ShadPlug.Worlds")
+						.contains(player.getWorld().getName())) {
+			event.setTag(ChatColor.GREEN.toString() + playerNameString);
 
 		}
 	}

@@ -10,8 +10,10 @@ public class ShadConfig {
 
 	public static HashMap<String, String> TeamRed = new HashMap<String, String>();
 	public static HashMap<String, String> TeamBlue = new HashMap<String, String>();
+	public static HashMap<String, String> TeamGreen = new HashMap<String, String>();
 	public static HashMap<String, Integer> redScoreHashMap = new HashMap<String, Integer>();
 	public static HashMap<String, Integer> blueScoreHashMap = new HashMap<String, Integer>();
+	public static HashMap<String, Integer> greenScoreHashMap = new HashMap<String, Integer>();
 	
 	public static HashMap<String, String> instantchat = new HashMap<String, String>();
 	
@@ -19,10 +21,12 @@ public class ShadConfig {
 	
 	public static ArrayList<String> redchatonline = new ArrayList<String>();
 	public static ArrayList<String> bluechatonline = new ArrayList<String>();
+	public static ArrayList<String> greenchatonline = new ArrayList<String>();
 	public static ArrayList<String> opChatOnline = new ArrayList<String>();
 	
 	public static int redScore = 0;
 	public static int blueScore = 0;
+	public static int greenScore = 0;
 	public static String[] enabledWorldsStrings = {"pvp"};
 
 	public ShadConfig(ShadPlug plugin) {
@@ -43,9 +47,12 @@ public class ShadConfig {
 				Arrays.asList(players));
 		plugin.getConfig().addDefault("ShadPlug.Teams.Red.Members",
 				Arrays.asList(players));
+		plugin.getConfig().addDefault("ShadPlug.Teams.Green.Members",
+				Arrays.asList(players));
 		
 		plugin.getConfig().addDefault("ShadPlug.Teams.Red.Score", 0);
 		plugin.getConfig().addDefault("ShadPlug.Teams.Blue.Score", 0);
+		plugin.getConfig().addDefault("ShadPlug.Teams.Green.Score", 0);
 		
 		plugin.getConfig().addDefault("ShadPlug.enabled", 1);
 				
@@ -55,6 +62,7 @@ public class ShadConfig {
 		
 		redScore = plugin.getConfig().getInt("ShadPlug.Teams.Red.Score");
 		blueScore = plugin.getConfig().getInt("ShadPlug.Teams.Blue.Score");
+		greenScore = plugin.getConfig().getInt("ShadPlug.Teams.Green.Score");
 		
 		// Options
 		plugin.getConfig().options().copyDefaults(true);
@@ -114,6 +122,37 @@ public class ShadConfig {
 			plugin.getConfig().set("ShadPlug.Spawn.Blue.Z", spawnZ);
 			plugin.getConfig().set("ShadPlug.Spawn.Blue.Pitch", pitch);
 			plugin.getConfig().set("ShadPlug.Spawn.Blue.Yaw", yaw);
+
+			break;
+		}
+
+		plugin.saveConfig();
+		// ReloadConfig();
+	}
+	
+	/*
+	 * 
+	 * Save Green Spawn to Config File ##
+	 * 
+	 */
+	public static void savePosToConfigGreen(int type, String world,
+			double spawnX, double spawnY, double spawnZ, float pitch, float yaw) {
+		switch (type) {
+		case 1:
+			plugin.getConfig().set("ShadPlug.Spawn.Green.World", world);
+			plugin.getConfig().set("ShadPlug.Spawn.Green.X", spawnX);
+			plugin.getConfig().set("ShadPlug.Spawn.Green.Y", spawnY);
+			plugin.getConfig().set("ShadPlug.Spawn.Green.Z", spawnZ);
+			plugin.getConfig().set("ShadPlug.Spawn.Green.Pitch", pitch);
+			plugin.getConfig().set("ShadPlug.Spawn.Green.Yaw", yaw);
+			break;
+		case 2:
+			plugin.getConfig().set("ShadPlug.Spawn.Green.World", world);
+			plugin.getConfig().set("ShadPlug.Spawn.Green.X", spawnX);
+			plugin.getConfig().set("ShadPlug.Spawn.Green.Y", spawnY);
+			plugin.getConfig().set("ShadPlug.Spawn.Green.Z", spawnZ);
+			plugin.getConfig().set("ShadPlug.Spawn.Green.Pitch", pitch);
+			plugin.getConfig().set("ShadPlug.Spawn.Green.Yaw", yaw);
 
 			break;
 		}
