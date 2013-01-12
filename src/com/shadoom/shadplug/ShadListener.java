@@ -12,6 +12,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -362,6 +363,8 @@ public class ShadListener implements Listener {
 		}
 	}
 
+	
+	
 	/*
 	 * Scoring
 	 */
@@ -390,7 +393,8 @@ public class ShadListener implements Listener {
 				Arrow arrow = (Arrow) ((Player) entitythatdied).getKiller();
 
 				Entity shooter = arrow.getShooter();
-
+				
+				
 				if (shooter instanceof Player) {
 
 					Player playerthatkilled = (Player) shooter;

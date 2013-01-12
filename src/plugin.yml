@@ -8,8 +8,6 @@ softdepend: [Vault, TagAPI]
 commands:
     shad:
         description: A very erotic Plugin developed for you.
-    hashlist:
-        description: to see content of TeamBlue and TeamRed hashmap.
     sc:
         description: Teamchat toggle and quickchat.
 permissions:
@@ -25,8 +23,6 @@ permissions:
         description: Allows them the usage of /shad spawn.
     ShadPlug.Join:
         description: Allows them to join a team.
-    ShadPlug.Admin.SetSpawn:
-        description: Allows them to set both Team's spawns.
     ShadPlug.Admin.Reload:
         description: Allows them to reload the config.yml
     ShadPlug.Admin.Clear:

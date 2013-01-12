@@ -41,6 +41,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 
 			if (args.length > 0) {
 
+		
 				if (ShadConfig.TeamBlue.containsKey(player.getName())) {
 
 					// String playername = player.getName();
@@ -62,7 +63,8 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 
 						String playerstring = "";
 
-						playerstring = ShadConfig.bluechatonline.get(playeron);
+						playerstring = ShadConfig.bluechatonline
+								.get(playeron);
 
 						Player playersend = Bukkit.getPlayer(playerstring);
 
@@ -75,8 +77,8 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 							String messagetosend = "";
 
 							while (lengthon < messagelength) {
-								messagetosend = messagetosend + args[lengthon]
-										+ " ";
+								messagetosend = messagetosend
+										+ args[lengthon] + " ";
 								lengthon++;
 							}
 
@@ -104,7 +106,8 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 
 						String playerstring = "";
 
-						playerstring = ShadConfig.opChatOnline.get(playeron1);
+						playerstring = ShadConfig.opChatOnline
+								.get(playeron1);
 
 						Player playersend = Bukkit.getPlayer(playerstring);
 
@@ -117,127 +120,26 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 							String messagetosend = "";
 
 							while (lengthon < messagelength) {
-								messagetosend = messagetosend + args[lengthon]
-										+ " ";
+								messagetosend = messagetosend
+										+ args[lengthon] + " ";
 								lengthon++;
 							}
 
 							String newmessagetosend = messagetosend;
 
-							if (ShadConfig.bluechatonline.contains(playersend
-									.getName()) == false) {
+							if (ShadConfig.bluechatonline
+									.contains(playersend.getName()) == false) {
 
 								playersend
 										.sendMessage("§6[§1Blue §aOp View§6] §2"
 												+ player.getDisplayName()
-												+ "§f: §e" + newmessagetosend);
-								System.out.println("§6[§1Blue §aOp View§6] §2"
-										+ player.getDisplayName() + "§f: §e"
-										+ newmessagetosend);
-
-							}
-
-						}
-
-						playeron1++;
-
-					}
-
-				}
-				
-				if (ShadConfig.TeamGreen.containsKey(player.getName())) {
-
-					// String playername = player.getName();
-
-					List<String> peopletosendto = null;
-
-					peopletosendto = plugin.getConfig().getStringList(
-							"ShadPlug.Teams.Green.Members");
-
-					if (peopletosendto == null)
-						return false;
-
-					int playeron = 0;
-					int sizeoflist = 0;
-
-					sizeoflist = ShadConfig.greenchatonline.size();
-
-					while (playeron < sizeoflist) {
-
-						String playerstring = "";
-
-						playerstring = ShadConfig.greenchatonline.get(playeron);
-
-						Player playersend = Bukkit.getPlayer(playerstring);
-
-						if (playersend != null) {
-
-							int messagelength = args.length;
-
-							int lengthon = 0;
-
-							String messagetosend = "";
-
-							while (lengthon < messagelength) {
-								messagetosend = messagetosend + args[lengthon]
-										+ " ";
-								lengthon++;
-							}
-
-							String newmessagetosend = messagetosend;
-
-							playersend.sendMessage("§6[§aGreen§6] §2"
-									+ player.getDisplayName() + "§f: §e"
-									+ newmessagetosend);
-							System.out.println("§6[§aGreen§6] §2"
-									+ player.getDisplayName() + "§f: §e"
-									+ newmessagetosend);
-
-						}
-
-						playeron++;
-
-					}
-
-					int playeron1 = 0;
-					int sizeoflist1 = 0;
-
-					sizeoflist1 = ShadConfig.opChatOnline.size();
-
-					while (playeron1 < sizeoflist1) {
-
-						String playerstring = "";
-
-						playerstring = ShadConfig.opChatOnline.get(playeron1);
-
-						Player playersend = Bukkit.getPlayer(playerstring);
-
-						if (playersend != null) {
-
-							int messagelength = args.length;
-
-							int lengthon = 0;
-
-							String messagetosend = "";
-
-							while (lengthon < messagelength) {
-								messagetosend = messagetosend + args[lengthon]
-										+ " ";
-								lengthon++;
-							}
-
-							String newmessagetosend = messagetosend;
-
-							if (ShadConfig.greenchatonline.contains(playersend
-									.getName()) == false) {
-
-								playersend
-										.sendMessage("§6[§1Green §aOp View§6] §2"
+												+ "§f: §e"
+												+ newmessagetosend);
+								System.out
+										.println("§6[§1Blue §aOp View§6] §2"
 												+ player.getDisplayName()
-												+ "§f: §e" + newmessagetosend);
-								System.out.println("§6[§1Green §aOp View§6] §2"
-										+ player.getDisplayName() + "§f: §e"
-										+ newmessagetosend);
+												+ "§f: §e"
+												+ newmessagetosend);
 
 							}
 
@@ -356,7 +258,119 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 
 						}
 
-					} else {
+					} 
+				
+				
+				if (ShadConfig.TeamGreen.containsKey(player.getName())) {
+
+					// String playername = player.getName();
+
+					List<String> peopletosendto = null;
+
+					peopletosendto = plugin.getConfig().getStringList(
+							"ShadPlug.Teams.Green.Members");
+
+					if (peopletosendto == null)
+						return false;
+
+					int playeron = 0;
+					int sizeoflist = 0;
+
+					sizeoflist = ShadConfig.greenchatonline.size();
+
+					while (playeron < sizeoflist) {
+
+						String playerstring = "";
+
+						playerstring = ShadConfig.greenchatonline
+								.get(playeron);
+
+						Player playersend = Bukkit.getPlayer(playerstring);
+
+						if (playersend != null) {
+
+							int messagelength = args.length;
+
+							int lengthon = 0;
+
+							String messagetosend = "";
+
+							while (lengthon < messagelength) {
+								messagetosend = messagetosend
+										+ args[lengthon] + " ";
+								lengthon++;
+							}
+
+							String newmessagetosend = messagetosend;
+
+							playersend.sendMessage("§6[§aGreen§6] §2"
+									+ player.getDisplayName() + "§f: §e"
+									+ newmessagetosend);
+							System.out.println("§6[§aGreen§6] §2"
+									+ player.getDisplayName() + "§f: §e"
+									+ newmessagetosend);
+
+						}
+
+						playeron++;
+
+					}
+
+					int playeron1 = 0;
+					int sizeoflist1 = 0;
+
+					sizeoflist1 = ShadConfig.opChatOnline.size();
+
+					while (playeron1 < sizeoflist1) {
+
+						String playerstring = "";
+
+						playerstring = ShadConfig.opChatOnline
+								.get(playeron1);
+
+						Player playersend = Bukkit.getPlayer(playerstring);
+
+						if (playersend != null) {
+
+							int messagelength = args.length;
+
+							int lengthon = 0;
+
+							String messagetosend = "";
+
+							while (lengthon < messagelength) {
+								messagetosend = messagetosend
+										+ args[lengthon] + " ";
+								lengthon++;
+							}
+
+							String newmessagetosend = messagetosend;
+
+							if (ShadConfig.greenchatonline
+									.contains(playersend.getName()) == false) {
+
+								playersend
+										.sendMessage("§6[§aGreen §aOp View§6] §2"
+												+ player.getDisplayName()
+												+ "§f: §e"
+												+ newmessagetosend);
+								System.out
+										.println("§6[§aGreen §aOp View§6] §2"
+												+ player.getDisplayName()
+												+ "§f: §e"
+												+ newmessagetosend);
+
+							}
+
+						}
+
+						playeron1++;
+
+					}
+
+				} 
+				
+					if(!ShadConfig.TeamBlue.containsKey(player.getName()) && !ShadConfig.TeamRed.containsKey(player.getName()) && !ShadConfig.TeamGreen.containsKey(player.getName())) {
 						player.sendMessage(ChatColor.RED
 								+ "You are not in a team!");
 					}
@@ -414,11 +428,18 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				erfolg = true;
 
 			}
+			
+			
 			// for Argument number 1
 			if (args.length == 1) {
 				String first;
 				first = args[0];
-
+				
+				if (first.equalsIgnoreCase("reward") && player.hasPermission("ShadPlug.Admin.Reward")) {
+					erfolg = true;
+					player.sendMessage("Type: /shad reward red/green/blue to reward a team");
+				}
+				
 				if (first.equalsIgnoreCase("addworld") && player.hasPermission("ShadPlug.Admin.Addworld")) {
 					erfolg = true;
 					player.sendMessage(ChatColor.RED + "Correct usage is: "
@@ -577,7 +598,7 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 								(float) plugin.getConfig().getDouble(
 										"ShadPlug.Spawn.Green.Pitch"));
 						final Location pLocationBefore = new Location(world, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
-						player.sendMessage("DONT MOVE. You will be ported to the Red base in 5 seconds.");
+						player.sendMessage("DONT MOVE. You will be ported to the Green base in 5 seconds.");
 						plugin.getServer()
 								.getScheduler()
 								.scheduleSyncDelayedTask(plugin,
@@ -789,15 +810,15 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				 */
 				if (first.equalsIgnoreCase("score")) {
 					erfolg = true;
-					player.sendMessage(ChatColor.RED + "====================");
+					player.sendMessage(ChatColor.RED + "======================");
 					player.sendMessage(ChatColor.WHITE
 							+ "Red          Blue          Green");
 					player.sendMessage(ChatColor.AQUA + ""
-							+ ShadConfig.redScore + "          "
-							+ ShadConfig.blueScore + "         "
+							+ ShadConfig.redScore + "             "
+							+ ShadConfig.blueScore + "            "
 							+ ShadConfig.greenScore
 							);
-					player.sendMessage(ChatColor.RED + "====================");
+					player.sendMessage(ChatColor.RED + "======================");
 				}
 				/*
 				 * Spit out help how to use List command
@@ -902,7 +923,8 @@ public class ShadCommand extends ShadPlug implements CommandExecutor {
 				/*
 				 * Add a world to the enabled Worlds.
 				 */
-				if (first.equals("addworld") && player.hasPermission("ShadPlug.Admin.Addworld")) {
+
+				if (first.equalsIgnoreCase("addworld") && player.hasPermission("ShadPlug.Admin.Addworld")) {
 					erfolg = true;
 					List<String> worldList = plugin.getConfig().getStringList(
 							"ShadPlug.Worlds");
